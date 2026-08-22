@@ -89,9 +89,10 @@ test.describe("responsive layout", () => {
 
   test("sticky nav does not cover anchored section headings", async ({ page }) => {
     await page.setViewportSize({ width: 390, height: 800 });
-    await page.goto("/", { waitUntil: "networkidle" });
-    await page.locator("#experience").scrollIntoViewIfNeeded();
-    await page.waitForTimeout(400);
+    // Navigate to the anchor the way a user would; scroll-padding-top on
+    // <html> must offset the sticky nav so the heading stays visible below it.
+    await page.goto("/#experience", { waitUntil: "networkidle" });
+    await page.waitForTimeout(600);
     const covered = await page.evaluate(() => {
       const heading = document.querySelector("#experience h2");
       if (!heading) return "missing";

@@ -73,8 +73,12 @@ test.describe("keyboard navigation", () => {
   });
 
   test("copy-email button announces success in a live region", async ({ page }) => {
+    await page.setViewportSize({ width: 1280, height: 800 });
     await page.context().grantPermissions(["clipboard-read", "clipboard-write"]);
-    const copyButton = page.getByRole("button", { name: /Copy email/ });
+    // Locate by type+content class (stable) — the accessible name flips from
+    // "Copy email" to "Copied!" after the click, which would orphan a
+    // name-based locator mid-assertion.
+    const copyButton = page.locator("#contact button[type='button']");
     await copyButton.scrollIntoViewIfNeeded();
     await copyButton.click();
     await expect(copyButton).toHaveText(/Copied!/);
