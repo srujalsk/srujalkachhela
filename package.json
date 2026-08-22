@@ -1,0 +1,41 @@
+{
+  "name": "srujal-kachhela-portfolio",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Portfolio website for Srujal Kachhela — Full Stack Developer | Technical Lead, Bangkok",
+  "scripts": {
+    "dev": "next dev",
+    "build": "npm run content:validate && next build",
+    "lint": "next lint --dir app --dir components --dir lib",
+    "typecheck": "tsc --noEmit",
+    "content:validate": "tsx scripts/validate-content.ts",
+    "test": "npm run typecheck && npm run lint && npm run content:validate && playwright test tests/unit.spec.ts",
+    "test:a11y": "npm run build && tsx scripts/serve-and-test.ts a11y",
+    "test:responsive": "tsx scripts/serve-and-test.ts responsive",
+    "lighthouse": "tsx scripts/lighthouse-ci.mjs",
+    "verify": "npm run test && npm run test:a11y && npm run test:responsive"
+  },
+  "dependencies": {
+    "gray-matter": "^4.0.3",
+    "next": "^15.5.23",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8",
+    "zod": "^3.25.76"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "^4.10.2",
+    "@eslint/eslintrc": "^3.3.6",
+    "@playwright/test": "^1.62.1",
+    "@tailwindcss/postcss": "^4.3.3",
+    "@types/node": "^20",
+    "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.4",
+    "eslint": "^9.39.5",
+    "eslint-config-next": "^16.3.2",
+    "postcss": "^8.5.26",
+    "serve": "^14.2.6",
+    "tailwindcss": "^4.3.3",
+    "tsx": "^4.20.6",
+    "typescript": "^5.9.3"
+  }
+}

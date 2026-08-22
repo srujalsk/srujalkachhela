@@ -1,0 +1,141 @@
+@import "tailwindcss";
+
+/* ---------------------------------------------------------------------------
+   Design tokens — single source of truth (Tailwind v4 @theme).
+   Dark ink foundation, warm high-contrast text, electric cyan accent.
+--------------------------------------------------------------------------- */
+@theme {
+  /* Color: foundation */
+  --color-ink-950: #0a0e12;
+  --color-ink-900: #0e1319;
+  --color-ink-800: #141b23;
+  --color-ink-700: #1c2530;
+  --color-ink-600: #2a3644;
+  --color-ink-500: #3d4c5e;
+
+  /* Color: text */
+  --color-paper-50: #f5f1ea;
+  --color-paper-100: #ece5d8;
+  --color-paper-300: #c9c0b0;
+  --color-paper-400: #a89f8f;
+
+  /* Color: accent (electric cyan) + semantic */
+  --color-accent-300: #7ff0e0;
+  --color-accent-400: #4de3cf;
+  --color-accent-500: #2cc9b4;
+  --color-accent-600: #1ea894;
+  --color-warn-400: #f0b45a;
+  --color-danger-400: #f06a6a;
+
+  /* Typography */
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains-mono), ui-monospace, monospace;
+
+  /* Motion */
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --animate-rise: rise 0.7s var(--ease-out-expo) both;
+  --animate-signal: signal 3.2s linear infinite;
+
+  @keyframes rise {
+    from {
+      opacity: 0;
+      transform: translateY(18px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  @keyframes signal {
+    from {
+      stroke-dashoffset: 24;
+    }
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+}
+
+/* Base layer */
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    /* Sticky-nav offset for anchored sections */
+    scroll-padding-top: 5.5rem;
+  }
+
+  body {
+    background-color: var(--color-ink-950);
+    color: var(--color-paper-100);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  ::selection {
+    background-color: var(--color-accent-500);
+    color: var(--color-ink-950);
+  }
+
+  /* Visible, high-contrast focus ring everywhere */
+  :focus-visible {
+    outline: 2px solid var(--color-accent-400);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+
+  @media (prefers-reduced-transparency: reduce) {
+    * {
+      backdrop-filter: none !important;
+    }
+  }
+
+  @media (forced-colors: active) {
+    :focus-visible {
+      outline: 3px solid Highlight;
+    }
+  }
+}
+
+/* Utilities */
+@utility container-site {
+  width: 100%;
+  max-width: 72rem;
+  margin-inline: auto;
+  padding-inline: 1.25rem;
+  padding-inline-start: max(1.25rem, env(safe-area-inset-left));
+  padding-inline-end: max(1.25rem, env(safe-area-inset-right));
+}
+
+@utility reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition:
+    opacity 0.7s var(--ease-out-expo),
+    transform 0.7s var(--ease-out-expo);
+}
+
+@utility reveal-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
