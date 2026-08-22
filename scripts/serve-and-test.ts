@@ -1,10 +1,10 @@
-/**
- * Serves the static export (out/) and runs the requested Playwright suite.
- * Usage: tsx scripts/serve-and-test.ts <a11y|responsive|unit>
+/** Minimal static server for out/ that understands the Pages base path.
+ *  Usage: tsx scripts/serve-and-test.ts <a11y|responsive|unit>
  */
 import { spawn } from "node:child_process";
 import path from "node:path";
 import { createServer } from "node:http";
+import { readFile } from "node:fs";
 
 const ROOT = path.resolve(__dirname, "..");
 const OUT = path.join(ROOT, "out");
@@ -37,30 +37,40 @@ function startServer(): Promise<void> {
       let filePath = path.join(OUT, decodeURIComponent(url));
       if (url.endsWith("/")) filePath = path.join(filePath, "index.html");
       else if (!path.extname(filePath)) filePath = path.join(filePath, "index.html");
-      fsServe(res, filePath);
-    });
-    function fsServe(res: import("node:http").ServerResponse, filePath: string) {
-      import("node:fs").then((fs) => {
-        fs.readFile(filePath, (err, data) => {
-          if (err) {
-            // GitHub Pages-style 404
-            fs.readFile(path.join(OUT, "404.html"), (err2, data404) => {
-              if (err2) {
-                res.writeHead(404);
-                res.end("Not found");
-              } else {
-                res.writeHead(404, { "Content-Type": "text/html; charset=utf-8" });
-                res.end(data404);
-              }
-            });
-            return;
-          }
-          const ext = path.extname(filePath).toLowerCase();
-          res.writeHead(200, { "Content-Type": MIME[ext] ?? "application/octet-stream" });
-          res.end(data);
+
+      readFile(filePath, (err, data) => {
+        if (!err) return send(res, 200, filePath, data);
+        // Retry once without the first path segment (GitHub-Pages-style
+        // basePath): out/ has no /<repo>/ prefix on disk.
+        const decoded = decodeURIComponent(url);
+        const stripped = "/" + decoded.split("/").filter(Boolean).slice(1).join("/");
+        const retryPath =
+          stripped === "/"
+            ? path.join(OUT, "index.html")
+            : path.extname(stripped)
+              ? path.join(OUT, stripped)
+              : path.join(OUT, stripped, "index.html");
+        readFile(retryPath, (err2, data2) => {
+          if (!err2) return send(res, 200, retryPath, data2);
+          // GitHub Pages-style 404
+          readFile(path.join(OUT, "404.html"), (err3, data404) => {
+            if (err3) {
+              res.writeHead(404);
+              res.end("Not found");
+            } else {
+              res.writeHead(404, { "Content-Type": "text/html; charset=utf-8" });
+              res.end(data404);
+            }
+          });
         });
       });
-    }
+
+      function send(res: import("node:http").ServerResponse, status: number, filePath: string, data: Buffer) {
+        const ext = path.extname(filePath).toLowerCase();
+        res.writeHead(status, { "Content-Type": MIME[ext] ?? "application/octet-stream" });
+        res.end(data);
+      }
+    });
     server.listen(PORT, HOST, () => resolve());
   });
 }

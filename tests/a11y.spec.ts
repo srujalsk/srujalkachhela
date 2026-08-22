@@ -42,7 +42,9 @@ test.describe("keyboard navigation", () => {
 
   test("mobile menu opens, traps Escape correctly, closes and restores focus", async ({ page }) => {
     await page.setViewportSize({ width: 375, height: 720 });
-    const menuButton = page.getByRole("button", { name: "Open main menu" });
+    // The button's accessible name flips between "Open/Close main menu";
+    // locate it by its stable aria-controls instead.
+    const menuButton = page.locator("button[aria-controls='mobile-menu']");
     await menuButton.click();
     const dialog = page.getByRole("dialog", { name: "Site menu" });
     await expect(dialog).toBeVisible();
@@ -60,7 +62,10 @@ test.describe("keyboard navigation", () => {
 
   test("mobile menu closes on link click and navigates", async ({ page }) => {
     await page.setViewportSize({ width: 375, height: 720 });
-    await page.getByRole("button", { name: "Open main menu" }).click();
+    // The button's accessible name flips between "Open/Close main menu";
+    // locate it by its stable aria-controls instead.
+    const menuButton = page.locator("button[aria-controls='mobile-menu']");
+    await menuButton.click();
     const dialog = page.getByRole("dialog", { name: "Site menu" });
     await dialog.getByRole("link", { name: /Experience/ }).click();
     await expect(dialog).not.toBeVisible();

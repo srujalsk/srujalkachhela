@@ -42,14 +42,14 @@ export function EducationSection({ education }: { education: Education }) {
         </Reveal>
         <ul className="mt-12 grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-8 max-w-4xl">
           {education.entries.map((entry, i) => (
-            <Reveal key={entry.title} delay={i * 60}>
-              <li className="border-l-2 border-accent-600 pl-4">
+            <Reveal key={entry.title} delay={i * 60} as="li">
+              <div className="border-l-2 border-accent-600 pl-4">
                 <div className="flex flex-wrap items-baseline justify-between gap-x-4">
                   <h3 className="font-semibold text-paper-50">{entry.title}</h3>
                   {entry.year ? <span className="font-mono text-xs text-accent-500">{entry.year}</span> : null}
                 </div>
                 {entry.detail ? <p className="mt-1.5 text-sm leading-relaxed text-paper-300">{entry.detail}</p> : null}
-              </li>
+              </div>
             </Reveal>
           ))}
         </ul>

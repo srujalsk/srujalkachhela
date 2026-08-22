@@ -7,15 +7,20 @@ interface RevealProps {
   /** Stagger delay in ms */
   delay?: number;
   className?: string;
+  /** Render as a different element (e.g. "li") to keep valid list semantics. */
+  as?: "div" | "li";
 }
 
 /**
  * Scroll-based section reveal. Adds a visibility class when the element
  * enters the viewport. With prefers-reduced-motion the CSS disables the
  * transition entirely, so content is always visible.
+ *
+ * Defaults to a <div>; pass as="li" when wrapping list items so the
+ * parent <ul>/<ol> keeps only allowed direct children (axe rule "list").
  */
-export default function Reveal({ children, delay = 0, className = "" }: RevealProps) {
-  const ref = useRef<HTMLDivElement>(null);
+export default function Reveal({ children, delay = 0, className = "", as = "div" }: RevealProps) {
+  const ref = useRef<any>(null);
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
@@ -41,13 +46,14 @@ export default function Reveal({ children, delay = 0, className = "" }: RevealPr
     return () => observer.disconnect();
   }, []);
 
+  const Tag = as;
   return (
-    <div
+    <Tag
       ref={ref}
       className={`reveal ${visible ? "reveal-visible" : ""} ${className}`}
       style={delay ? { transitionDelay: `${delay}ms` } : undefined}
     >
       {children}
-    </div>
+    </Tag>
   );
 }

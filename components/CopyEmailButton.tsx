@@ -16,7 +16,22 @@ export default function CopyEmailButton({ email }: { email: string }) {
 
   const copy = async () => {
     try {
-      await navigator.clipboard.writeText(email);
+      if (navigator.clipboard && window.isSecureContext) {
+        await navigator.clipboard.writeText(email);
+      } else {
+        // Fallback for non-secure contexts (e.g. plain-HTTP test servers):
+        // use a temporary textarea and the legacy execCommand path.
+        const ta = document.createElement("textarea");
+        ta.value = email;
+        ta.setAttribute("readonly", "");
+        ta.style.position = "fixed";
+        ta.style.opacity = "0";
+        document.body.appendChild(ta);
+        ta.select();
+        const ok = document.execCommand("copy");
+        document.body.removeChild(ta);
+        if (!ok) throw new Error("execCommand copy failed");
+      }
       setStatus("copied");
     } catch {
       setStatus("fallback");
