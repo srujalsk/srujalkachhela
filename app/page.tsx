@@ -1,3 +1,4 @@
+import AboutSidebar from "@/components/AboutSidebar";
 import Contact from "@/components/Contact";
 import ExperienceTimeline from "@/components/ExperienceTimeline";
 import FeaturedWork from "@/components/FeaturedWork";
@@ -59,10 +60,20 @@ export default function HomePage() {
       <main id="main-content" className="flex-1">
         <Hero profile={profile} />
         <ImpactMetrics metrics={profile.metrics} />
-        <FeaturedWork projects={projects} />
-        <ExperienceTimeline entries={experience} />
-        <SkillsSection skills={skills} />
-        <EducationSection education={education} />
+
+        {/* Two-column layout: static info rail on the left (lg+),
+            scrolling content column on the right. Stacks on mobile. */}
+        <div className="container-site grid grid-cols-1 gap-x-12 py-20 sm:py-28 lg:grid-cols-[20rem_minmax(0,1fr)]">
+          <AboutSidebar profile={profile} />
+
+          <div className="min-w-0 scroll-mt-24 space-y-24 pt-16 lg:pt-0">
+            <FeaturedWork projects={projects} />
+            <ExperienceTimeline entries={experience} />
+            <SkillsSection skills={skills} />
+            <EducationSection education={education} />
+          </div>
+        </div>
+
         <Contact profile={profile} />
       </main>
       <Footer profile={profile} />

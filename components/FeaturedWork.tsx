@@ -32,7 +32,7 @@ function ProjectLinks({ project }: { project: Project }) {
 
 export default function FeaturedWork({ projects }: { projects: Project[] }) {
   return (
-    <section id="work" aria-labelledby="work-heading" className="container-site py-20 sm:py-28">
+    <section id="work" aria-labelledby="work-heading" className="scroll-mt-24">
       <Reveal>
         <h2
           id="work-heading"
@@ -48,7 +48,7 @@ export default function FeaturedWork({ projects }: { projects: Project[] }) {
         </p>
       </Reveal>
 
-      <div className="mt-12 grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="mt-10 grid grid-cols-1 md:grid-cols-2 gap-6">
         {projects.map((project, i) => (
           <Reveal key={project.slug} delay={i * 90}>
             <article className="group relative flex h-full flex-col rounded-lg border border-ink-700 bg-ink-900 p-6 sm:p-8 transition-colors hover:border-accent-600 focus-within:border-accent-600">

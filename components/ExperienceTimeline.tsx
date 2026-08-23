@@ -30,8 +30,7 @@ function Body({ text }: { text: string }) {
 
 export default function ExperienceTimeline({ entries }: { entries: Experience[] }) {
   return (
-    <section id="experience" aria-labelledby="experience-heading" className="border-y border-ink-800 bg-ink-900/60 py-20 sm:py-28">
-      <div className="container-site">
+    <section id="experience" aria-labelledby="experience-heading" className="scroll-mt-24">
         <Reveal>
           <h2 id="experience-heading" className="flex items-baseline gap-4 font-mono text-xl sm:text-2xl font-bold text-paper-50">
             <span aria-hidden="true" className="text-accent-500 text-base">02.</span>
@@ -39,7 +38,7 @@ export default function ExperienceTimeline({ entries }: { entries: Experience[] 
           </h2>
         </Reveal>
 
-        <ol className="relative mt-14 space-y-16 border-l border-ink-600 pl-6 sm:pl-10 ml-2 sm:ml-6 max-w-3xl">
+        <ol className="relative mt-12 space-y-14 border-l border-ink-600 pl-6 sm:pl-8">
           {entries.map((entry, i) => (
             <li key={`${entry.company}-${entry.start}`} className="relative">
               {/* timeline node */}
@@ -47,13 +46,6 @@ export default function ExperienceTimeline({ entries }: { entries: Experience[] 
                 aria-hidden="true"
                 className="absolute -left-[31px] top-1.5 block h-3 w-3 rounded-full border-2 border-accent-500 bg-ink-950 sm:-left-[47px]"
               />
-              {/* progress fill on the line up to this node */}
-              {i === 0 ? (
-                <span
-                  aria-hidden="true"
-                  className="absolute -left-px top-1.5 h-[calc(100%+4rem)] w-px bg-gradient-to-b from-accent-500 to-transparent motion-reduce:hidden"
-                />
-              ) : null}
               <Reveal delay={i * 80}>
                 <header>
                   <p className="font-mono text-xs text-paper-400">
@@ -99,7 +91,6 @@ export default function ExperienceTimeline({ entries }: { entries: Experience[] 
             </li>
           ))}
         </ol>
-      </div>
     </section>
   );
 }
