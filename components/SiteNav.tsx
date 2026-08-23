@@ -4,15 +4,17 @@ import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 
 const NAV_LINKS = [
-  { href: "/#work", label: "Work" },
-  { href: "/#experience", label: "Experience" },
-  { href: "/#skills", label: "Skills" },
-  { href: "/#education", label: "Education" },
-  { href: "/#contact", label: "Contact" },
+  { id: "about", label: "About" },
+  { id: "work", label: "Projects" },
+  { id: "experience", label: "Experience" },
+  { id: "skills", label: "Skills" },
+  { id: "education", label: "Education" },
+  { id: "contact", label: "Contact" },
 ] as const;
 
 export default function SiteNav() {
   const [open, setOpen] = useState(false);
+  const [active, setActive] = useState<string>("about");
   const menuButtonRef = useRef<HTMLButtonElement>(null);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
 
@@ -31,45 +33,44 @@ export default function SiteNav() {
     return () => document.removeEventListener("keydown", onKeyDown);
   }, [open]);
 
+  // Highlight the nav item for the section currently in view.
+  useEffect(() => {
+    const sections = NAV_LINKS.map((l) => document.getElementById(l.id)).filter(
+      (el): el is HTMLElement => el !== null,
+    );
+    if (sections.length === 0) return;
+    const observer = new IntersectionObserver(
+      (entriesList) => {
+        for (const entry of entriesList) {
+          if (entry.isIntersecting) setActive(entry.target.id);
+        }
+      },
+      { rootMargin: "-40% 0px -55% 0px" },
+    );
+    for (const s of sections) observer.observe(s);
+    return () => observer.disconnect();
+  }, []);
+
   const closeAndReturnFocus = () => {
     setOpen(false);
     menuButtonRef.current?.focus();
   };
 
   return (
-    <header className="sticky top-0 z-40 border-b border-ink-700 bg-ink-950/95">
-      <nav aria-label="Main" className="container-site flex h-16 items-center justify-between">
+    <header className="lg:fixed lg:inset-y-0 lg:left-0 lg:w-64 lg:border-r-0 lg:z-40 z-40">
+      {/* Top bar (mobile/tablet): logo + menu button */}
+      <nav
+        aria-label="Main"
+        className="lg:hidden sticky top-0 flex h-16 items-center justify-between border-b border-ink-700 bg-ink-950/95 px-6 backdrop-blur-sm"
+      >
         <Link
-          href="/"
-          className="font-mono text-sm text-accent-400 min-h-11 inline-flex items-center"
+          href="/#about"
+          className="font-mono text-lg text-accent-400 min-h-11 inline-flex items-center"
           aria-label="Srujal Kachhela — home"
         >
           {"<sk />"}
         </Link>
 
-        {/* Desktop nav */}
-        <ul className="hidden md:flex items-center gap-1">
-          {NAV_LINKS.map((link) => (
-            <li key={link.href}>
-              <Link
-                href={link.href}
-                className="inline-flex items-center min-h-11 px-3 text-sm text-paper-300 hover:text-accent-400 transition-colors"
-              >
-                {link.label}
-              </Link>
-            </li>
-          ))}
-          <li>
-            <a
-              href="mailto:srujal.k@gmail.com"
-              className="ml-2 inline-flex items-center min-h-11 px-4 rounded-md border border-accent-500 text-sm font-mono text-accent-400 hover:bg-accent-500/10 transition-colors"
-            >
-              Email me
-            </a>
-          </li>
-        </ul>
-
-        {/* Mobile menu button */}
         <button
           ref={menuButtonRef}
           type="button"
@@ -77,7 +78,7 @@ export default function SiteNav() {
           aria-controls="mobile-menu"
           aria-label={open ? "Close main menu" : "Open main menu"}
           onClick={() => setOpen((v) => !v)}
-          className="md:hidden inline-flex min-w-11 min-h-11 items-center justify-center rounded-md text-paper-100 hover:text-accent-400"
+          className="inline-flex min-w-11 min-h-11 items-center justify-center rounded-md text-paper-100 hover:text-accent-400"
         >
           <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
             {open ? (
@@ -96,6 +97,50 @@ export default function SiteNav() {
         </button>
       </nav>
 
+      {/* Fixed left rail (desktop) */}
+      <nav
+        aria-label="Main"
+        className="hidden lg:flex lg:flex-col lg:h-screen lg:sticky lg:top-0 lg:px-10 lg:py-12"
+      >
+        <div className="flex items-center gap-3">
+          <Link
+            href="/#about"
+            className="font-mono text-xl font-bold text-accent-400 min-h-11 inline-flex items-center hover:text-accent-300 transition-colors"
+            aria-label="Srujal Kachhela — home"
+          >
+            {"<sk />"}
+          </Link>
+        </div>
+
+        <ul className="mt-16 space-y-1">
+          {NAV_LINKS.map((link, i) => (
+            <li key={link.id}>
+              <a
+                href={`#${link.id}`}
+                aria-current={active === link.id ? "true" : undefined}
+                className={`group flex min-h-11 items-center gap-3 font-mono text-xs tracking-wider uppercase transition-colors ${
+                  active === link.id ? "text-accent-400" : "text-paper-300 hover:text-accent-400"
+                }`}
+              >
+                <span
+                  aria-hidden="true"
+                  className={`block h-px w-8 bg-current transition-all group-hover:w-12 ${active === link.id ? "w-12" : ""}`}
+                />
+                <span className="text-accent-500/70">0{i + 1}</span>
+                {link.label}
+              </a>
+            </li>
+          ))}
+        </ul>
+
+        <a
+          href="mailto:srujal.k@gmail.com"
+          className="mt-auto inline-flex min-h-11 items-center justify-center rounded-md border border-accent-500 px-4 font-mono text-sm text-accent-400 hover:bg-accent-500/10 transition-colors"
+        >
+          Email me
+        </a>
+      </nav>
+
       {/* Mobile menu (dialog) */}
       {open && (
         <div
@@ -103,7 +148,7 @@ export default function SiteNav() {
           role="dialog"
           aria-modal="true"
           aria-label="Site menu"
-          className="md:hidden fixed inset-x-0 top-16 bottom-0 z-50 bg-ink-950 border-t border-ink-700 p-6 flex flex-col"
+          className="lg:hidden fixed inset-x-0 top-16 bottom-0 z-50 bg-ink-950 border-t border-ink-700 p-6 flex flex-col"
         >
           <button
             ref={closeButtonRef}
@@ -119,9 +164,9 @@ export default function SiteNav() {
           </button>
           <ul className="mt-4 flex flex-col gap-1">
             {NAV_LINKS.map((link, i) => (
-              <li key={link.href}>
-                <Link
-                  href={link.href}
+              <li key={link.id}>
+                <a
+                  href={`#${link.id}`}
                   onClick={closeAndReturnFocus}
                   className="flex min-h-14 items-center px-2 text-lg text-paper-100 hover:text-accent-400 border-b border-ink-800"
                 >
@@ -129,7 +174,7 @@ export default function SiteNav() {
                     0{i + 1}
                   </span>
                   {link.label}
-                </Link>
+                </a>
               </li>
             ))}
           </ul>

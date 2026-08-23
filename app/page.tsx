@@ -57,7 +57,10 @@ export default function HomePage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
       <SiteNav />
-      <main id="main-content" className="flex-1">
+      <main
+        id="main-content"
+        className="flex-1 lg:pl-64 [scroll-padding-top:6rem]"
+      >
         <Hero profile={profile} />
         <ImpactMetrics metrics={profile.metrics} />
 
