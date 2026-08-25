@@ -2,7 +2,6 @@
 
 import { useRef, useState } from "react";
 import type { Experience } from "@/lib/content-schema";
-import Reveal from "./Reveal";
 
 const MONTHS = [
   "Jan", "Feb", "Mar", "Apr", "May", "Jun",
@@ -20,10 +19,10 @@ function formatMonth(value: string): string {
 /**
  * Brittany Chiang-style experience: vertical list of company tabs on the
  * left; the selected job's details render on the right. Keyboard accessible
- * per WAI-ARIA tabs pattern (roving tabindex, arrow keys).
+ * per WAI-ARIA tabs pattern (roving tabindex, arrow keys). Tabs wrap into
+ * pills on small screens.
  */
 export default function ExperienceTabs({ entries }: { entries: Experience[] }) {
-  // Entries are sorted newest-first; default to the most recent job.
   const [selected, setSelected] = useState(0);
   const tabRefs = useRef<Array<HTMLButtonElement | null>>([]);
 
@@ -46,7 +45,7 @@ export default function ExperienceTabs({ entries }: { entries: Experience[] }) {
   };
 
   return (
-    <div className="mt-10 flex flex-col gap-8 md:flex-row md:gap-10">
+    <div className="mt-10 flex flex-col gap-6 md:flex-row md:gap-10">
       {/* Company tabs */}
       <div
         role="tablist"
@@ -131,30 +130,5 @@ export default function ExperienceTabs({ entries }: { entries: Experience[] }) {
         ) : null}
       </div>
     </div>
-  );
-}
-
-export { formatMonth };
-
-/** Kept for potential static fallbacks/tests; not rendered by default. */
-export function ExperienceTimelineStatic({ entries }: { entries: Experience[] }) {
-  return (
-    <ol className="space-y-10">
-      {entries.map((entry, i) => (
-        <li key={`${entry.company}-${entry.start}`}>
-          <Reveal delay={i * 80}>
-            <header>
-              <p className="font-mono text-xs text-paper-400">
-                {formatMonth(entry.start)} — {formatMonth(entry.end)}
-              </p>
-              <h3 className="mt-1.5 text-lg sm:text-xl font-bold text-paper-50">
-                {entry.role} <span className="text-accent-400">@ {entry.company}</span>
-              </h3>
-              {entry.location ? <p className="mt-1 text-xs text-paper-400">{entry.location}</p> : null}
-            </header>
-          </Reveal>
-        </li>
-      ))}
-    </ol>
   );
 }

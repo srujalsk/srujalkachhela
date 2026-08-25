@@ -3,9 +3,9 @@ import ExperienceTabs from "@/components/ExperienceTabs";
 import FeaturedWork from "@/components/FeaturedWork";
 import Footer from "@/components/Footer";
 import Hero, { ImpactMetrics } from "@/components/Hero";
+import MobileNav from "@/components/MobileNav";
 import Reveal from "@/components/Reveal";
 import SiteNav from "@/components/SiteNav";
-import SideRail from "@/components/SideRail";
 import { SkillsSection, EducationSection } from "@/components/SkillsEducation";
 import {
   getEducation,
@@ -57,38 +57,36 @@ export default function HomePage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
+      <MobileNav />
       <div className="lg:flex">
-        {/* Fixed left rail (desktop): nav tracks scroll; content column scrolls */}
-        <aside className="hidden lg:block lg:w-64 lg:shrink-0 lg:px-10">
-          <SideRail />
-        </aside>
+        {/* Fixed left rail (desktop): logo + section nav + socials; the
+            content column to the right does the scrolling. */}
+        <SiteNav />
 
-        <div className="min-w-0 flex-1">
-          <SiteNav />
+        <main
+          id="main-content"
+          className="min-w-0 flex-1 mx-auto w-full max-w-3xl px-6 sm:px-10 lg:px-0"
+        >
+          <Hero profile={profile} />
+          <ImpactMetrics metrics={profile.metrics} />
 
-          <main id="main-content" className="mx-auto w-full max-w-3xl px-6 sm:px-10">
-            <Hero profile={profile} />
-            <ImpactMetrics metrics={profile.metrics} />
+          <section id="experience" aria-labelledby="experience-heading" className="scroll-mt-24 py-20">
+            <Reveal>
+              <h2 id="experience-heading" className="flex items-baseline gap-4 font-mono text-xl sm:text-2xl font-bold text-paper-50">
+                <span aria-hidden="true" className="text-accent-500 text-base">02.</span>
+                Where I&apos;ve worked
+              </h2>
+            </Reveal>
+            <ExperienceTabs entries={experience} />
+          </section>
 
-            <section id="experience" aria-labelledby="experience-heading" className="scroll-mt-24 py-20">
-              <Reveal>
-                <h2 id="experience-heading" className="flex items-baseline gap-4 font-mono text-xl sm:text-2xl font-bold text-paper-50">
-                  <span aria-hidden="true" className="text-accent-500 text-base">02.</span>
-                  Where I&apos;ve worked
-                </h2>
-              </Reveal>
-              <ExperienceTabs entries={experience} />
-            </section>
-
-            <FeaturedWork projects={projects} />
-            <SkillsSection skills={skills} />
-            <EducationSection education={education} />
-            <Contact profile={profile} />
-          </main>
-
-          <Footer profile={profile} />
-        </div>
+          <FeaturedWork projects={projects} />
+          <SkillsSection skills={skills} />
+          <EducationSection education={education} />
+          <Contact profile={profile} />
+        </main>
       </div>
+      <Footer profile={profile} />
     </>
   );
 }
