@@ -1,10 +1,11 @@
-import AboutSidebar from "@/components/AboutSidebar";
 import Contact from "@/components/Contact";
-import ExperienceTimeline from "@/components/ExperienceTimeline";
+import ExperienceTabs from "@/components/ExperienceTabs";
 import FeaturedWork from "@/components/FeaturedWork";
 import Footer from "@/components/Footer";
 import Hero, { ImpactMetrics } from "@/components/Hero";
+import Reveal from "@/components/Reveal";
 import SiteNav from "@/components/SiteNav";
+import SideRail from "@/components/SideRail";
 import { SkillsSection, EducationSection } from "@/components/SkillsEducation";
 import {
   getEducation,
@@ -56,30 +57,38 @@ export default function HomePage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <SiteNav />
-      <main
-        id="main-content"
-        className="flex-1 lg:pl-64 [scroll-padding-top:6rem]"
-      >
-        <Hero profile={profile} />
-        <ImpactMetrics metrics={profile.metrics} />
+      <div className="lg:flex">
+        {/* Fixed left rail (desktop): nav tracks scroll; content column scrolls */}
+        <aside className="hidden lg:block lg:w-64 lg:shrink-0 lg:px-10">
+          <SideRail />
+        </aside>
 
-        {/* Two-column layout: static info rail on the left (lg+),
-            scrolling content column on the right. Stacks on mobile. */}
-        <div className="container-site grid grid-cols-1 gap-x-12 py-20 sm:py-28 lg:grid-cols-[20rem_minmax(0,1fr)]">
-          <AboutSidebar profile={profile} />
+        <div className="min-w-0 flex-1">
+          <SiteNav />
 
-          <div className="min-w-0 scroll-mt-24 space-y-24 pt-16 lg:pt-0">
+          <main id="main-content" className="mx-auto w-full max-w-3xl px-6 sm:px-10">
+            <Hero profile={profile} />
+            <ImpactMetrics metrics={profile.metrics} />
+
+            <section id="experience" aria-labelledby="experience-heading" className="scroll-mt-24 py-20">
+              <Reveal>
+                <h2 id="experience-heading" className="flex items-baseline gap-4 font-mono text-xl sm:text-2xl font-bold text-paper-50">
+                  <span aria-hidden="true" className="text-accent-500 text-base">02.</span>
+                  Where I&apos;ve worked
+                </h2>
+              </Reveal>
+              <ExperienceTabs entries={experience} />
+            </section>
+
             <FeaturedWork projects={projects} />
-            <ExperienceTimeline entries={experience} />
             <SkillsSection skills={skills} />
             <EducationSection education={education} />
-          </div>
-        </div>
+            <Contact profile={profile} />
+          </main>
 
-        <Contact profile={profile} />
-      </main>
-      <Footer profile={profile} />
+          <Footer profile={profile} />
+        </div>
+      </div>
     </>
   );
 }

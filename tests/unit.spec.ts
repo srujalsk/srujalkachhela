@@ -73,13 +73,19 @@ test.describe("home page rendering", () => {
     await expect(metrics.first()).toContainText("%");
   });
 
-  test("renders four experience entries", async ({ page }) => {
-    const entries = page.locator("#experience ol > li");
-    await expect(entries).toHaveCount(4);
+  test("renders experience as company tabs", async ({ page }) => {
+    // Experience is now a Brittany Chiang-style tab list: one tab per company
+    const tabs = page.getByRole("tab");
+    await expect(tabs).toHaveCount(4);
     await expect(page.locator("#experience")).toContainText("Agoda");
     await expect(page.locator("#experience")).toContainText("vConstruct");
     await expect(page.locator("#experience")).toContainText("Persistent Systems");
     await expect(page.locator("#experience")).toContainText("Atos India");
+
+    // Selecting a tab shows that role's details
+    await tabs.nth(1).click();
+    const panel = page.getByRole("tabpanel");
+    await expect(panel).toContainText("@ vConstruct");
   });
 
   test("no CV download button when cvPath is empty", async ({ page }) => {
