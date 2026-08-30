@@ -37,7 +37,8 @@ export default function MobileNav() {
   };
 
   return (
-    <header className="lg:hidden sticky top-0 z-40 border-b border-ink-700 bg-ink-950/95 backdrop-blur-sm">
+    <>
+      <header className="lg:hidden sticky top-0 z-40 border-b border-ink-700 bg-ink-950/95 backdrop-blur-sm">
       <nav aria-label="Main" className="flex h-16 items-center justify-between px-6">
         <Link
           href="/#about"
@@ -72,6 +73,7 @@ export default function MobileNav() {
           </svg>
         </button>
       </nav>
+      </header>
 
       {open && (
         <div
@@ -118,6 +120,6 @@ export default function MobileNav() {
           </a>
         </div>
       )}
-    </header>
+    </>
   );
 }
