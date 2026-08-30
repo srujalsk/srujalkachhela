@@ -1,4 +1,10 @@
+# lighthouse
+lighthouse-report/
+
 node_modules/
+
+# next generated
+next-env.d.ts
 .next/
 out/
 test-results/
