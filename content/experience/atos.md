@@ -14,7 +14,11 @@ stack:
 highlights:
   - Built web and desktop applications.
   - Implemented an expert-based rule evaluation engine for an AI-based desktop application.
-  - Provided SAP Solution Manager and ITIL consultancy for a Xerox Technologies UK implementation.
+  - Provided SAP Solution Manager and ITIL consultancy for an enterprise UK implementation.
 ---
 
-Early-career software engineering at Atos India: web and desktop applications, an expert-based rule evaluation engine powering an AI-based desktop application, and SAP Solution Manager / ITIL consultancy supporting a Xerox Technologies UK implementation.
+Early-career software engineering across web and desktop applications.
+
+Built an expert-based rule evaluation engine that powered an AI-based desktop application.
+
+Also provided SAP Solution Manager and ITIL consultancy supporting an enterprise implementation for a UK-based customer.

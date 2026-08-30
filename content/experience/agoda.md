@@ -13,10 +13,14 @@ stack:
   - Spring Boot
   - Microservices
 highlights:
-  - WhatsApp login and account linking across APAC markets, improving booking outcomes by up to 25% in impacted markets.
-  - LINE login and account linking across Thailand, Japan, and Taiwan, increasing daily bookings by approximately 250.
-  - Dynamic developer-token issuance with custom claims integrated with Okta.
+  - Social-login and account-linking systems across APAC markets, improving booking outcomes by up to 25% in impacted markets.
+  - Messaging-platform login integrations across Thailand, Japan, and Taiwan, increasing daily bookings by approximately 250.
+  - Dynamic developer-token issuance with custom claims for an enterprise identity platform.
   - Range-based allocation service for cross-data-centre allocations, reducing data-centre range wastage by up to 80%.
 ---
 
-Senior Software Engineer at Agoda (travel, APAC). Working on identity and account-linking systems at travel scale — WhatsApp and LINE login integrations across APAC markets — and platform services including dynamic developer-token issuance with Okta and a range-based allocation service for cross-data-centre allocations.
+Working on identity and account-linking systems at travel scale — social and messaging-platform login integrations serving users across APAC markets.
+
+Building the platform services behind them: dynamic developer-token issuance with custom claims, and a range-based allocation service that keeps cross-data-centre resource usage efficient.
+
+The work pairs React and TypeScript frontends with Java microservices, tuned for high-traffic production systems.

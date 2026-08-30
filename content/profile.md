@@ -11,9 +11,9 @@ showPhone: false
 phone: ""
 metrics:
   - value: "25%"
-    label: "Up to 25% improvement in booking outcomes in impacted markets (WhatsApp login & account linking)"
+    label: "Up to 25% improvement in booking outcomes in impacted markets (social login & account linking)"
   - value: "~250"
-    label: "Approximately 250 additional daily bookings attributed to LINE login integration"
+    label: "Approximately 250 additional daily bookings attributed to messaging-platform login integration"
   - value: ">30%"
     label: "More than 30% developer-effort savings from a lean shared micro-frontend framework"
   - value: "-80%"

@@ -24,12 +24,10 @@ highlights:
   - VPC networking and security.
   - .NET Core Web API and AngularJS application development.
   - Jenkins, MSBuild, Coded UI, and WiX Toolset build and test automation.
-  - AWS Storage Gateway, VMware ESXi, S3, SMB file shares, HAProxy, and Elasticsearch infrastructure work.
-  - Yammer chatbot proof of concept.
-
-projects:
-  - Bio-Rad Unity Next
-  - Agilent Technologies enterprise content management
 ---
 
-Team Lead at Persistent Systems working across projects including Bio-Rad Unity Next and Agilent Technologies enterprise content management. Focused on AWS infrastructure as code with CloudFormation, IoT Core integration, Lambda APIs in .NET Core and Node.js, CodeBuild/CodePipeline automation, and VPC networking and security.
+Led delivery across enterprise web and cloud projects, owning both application development and the infrastructure beneath it.
+
+Focused on AWS infrastructure as code with CloudFormation, IoT Core device integration, and Lambda APIs built on .NET Core and Node.js.
+
+Rounded out the platform with CodeBuild/CodePipeline automation, VPC networking and security, and Jenkins-based build and test automation for .NET and AngularJS applications.
