@@ -16,7 +16,7 @@ test.describe("accessibility (axe)", () => {
   });
 
   test("404 page has no serious axe violations", async ({ page }) => {
-    await page.goto("/definitely-not-a-real-page/", { waitUntil: "load" });
+    await page.goto("/definitely-not-a-real-page/", { waitUntil: "networkidle" });
     const results = await new AxeBuilder({ page }).analyze();
     expect(results.violations.filter((v) => v.impact !== "minor").map((v) => v.id)).toEqual([]);
   });

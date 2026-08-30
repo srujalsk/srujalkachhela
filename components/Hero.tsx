@@ -70,13 +70,7 @@ export default function Hero({ profile }: { profile: Profile }) {
             href="#experience"
             className="inline-flex min-h-12 items-center rounded-md bg-accent-500 px-6 font-mono text-sm font-semibold text-ink-950 hover:bg-accent-400 transition-colors"
           >
-            View work
-          </a>
-          <a
-            href="#experience"
-            className="inline-flex min-h-12 items-center rounded-md border border-accent-500 px-6 font-mono text-sm text-accent-400 hover:bg-accent-500/10 transition-colors"
-          >
-            Experience
+            View experience
           </a>
           {profile.cvPath ? (
             <a
