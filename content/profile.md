@@ -22,6 +22,6 @@ metrics:
 
 ## About
 
-I've spent 11+ years building software, mostly cloud and on-premises systems, and I currently lead Agile engineering teams from Bangkok. I design front-end platforms and the serverless, event-driven integrations that connect them.
+I've spent 11+ years building software, mostly cloud and on-premises systems, and I currently lead Agile engineering teams from Bangkok. My day-to-day tools are React, TypeScript, and Java, with Azure and AWS underneath and a soft spot for serverless, event-driven architecture.
 
-Recent work covers identity and account-linking systems at travel scale, a micro-frontend framework shared across product teams, construction-technology applications, and AWS infrastructure as code.
+Recent work covers identity and account-linking systems at travel scale, a micro-frontend framework shared across product teams, construction-technology applications, and infrastructure as code on AWS.

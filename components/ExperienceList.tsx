@@ -56,14 +56,7 @@ export default function ExperienceList({ entries }: { entries: Experience[] }) {
           ) : null}
 
           {e.stack.length > 0 ? (
-            <ul className="mt-6 flex flex-wrap gap-x-4 gap-y-1.5 font-mono text-xs text-paper-400" aria-label={`${e.company} technology stack`}>
-              {e.stack.map((tech) => (
-                <li key={tech} className="flex items-center gap-2">
-                  <span aria-hidden="true" className="text-accent-500">▹</span>
-                  {tech}
-                </li>
-              ))}
-            </ul>
+            <p className="sr-only">Technologies: {e.stack.join(", ")}.</p>
           ) : null}
         </article>
       ))}
