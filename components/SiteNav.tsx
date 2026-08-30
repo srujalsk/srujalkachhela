@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const SECTIONS = [
   { id: "about", label: "About" },
@@ -18,44 +18,72 @@ const SECTIONS = [
 export default function SiteNav() {
   const [active, setActive] = useState<string>("about");
 
-  // Clicking a rail link should highlight it immediately instead of waiting
-  // for the smooth scroll to settle (the observer can lag or skip the target
-  // when the section sits against the bottom-of-page scroll limit).
-  const handleNavClick = (id: string) => setActive(id);
+  // Clicking a rail link highlights immediately and pins the choice until the
+  // smooth scroll arrives: without the pin, scroll events fired mid-flight
+  // would overwrite it with whatever section the passing viewport shows.
+  const suppressRef = useRef(false);
+  const handleNavClick = (id: string) => {
+    setActive(id);
+    // Pin the choice while the smooth scroll flies: mid-flight scroll events
+    // would otherwise overwrite it with whatever section passes through the
+    // band. Release after the scroll has had time to arrive.
+    suppressRef.current = true;
+    setTimeout(() => {
+      suppressRef.current = false;
+    }, 1400);
+  };
 
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        // Pick the intersecting section highest on screen, not loop order.
-        let best: { id: string; top: number } | null = null;
-        for (const entry of entries) {
-          if (!entry.isIntersecting) continue;
-          const top = entry.boundingClientRect.top;
-          if (!best || top < best.top) best = { id: entry.target.id, top };
-        }
-        if (best) setActive(best.id);
-      },
-      { rootMargin: "-30% 0px -55% 0px", threshold: 0 },
-    );
-    for (const { id } of SECTIONS) {
-      const el = document.getElementById(id);
-      if (el) observer.observe(el);
-    }
+    // Scroll-spy: on every scroll frame, the active section is the one whose
+    // heading is at or above the 35% viewport line. A pure position check
+    // (not IntersectionObserver) because transition-only events miss state
+    // that doesn't change — e.g. scrolling up from a bottom-anchored Contact,
+    // where Experience already spans the whole band.
+    let raf = 0;
 
-    // Bottom-of-page fallback: the last section may never reach the
-    // observer's intersection band because the page stops scrolling first
-    // (bottom-anchored content). When the page is at max scroll, highlight
-    // the last section.
-    const onScroll = () => {
+    const update = () => {
+      raf = 0;
+      if (suppressRef.current) return;
       const doc = document.documentElement;
-      const atBottom = window.scrollY + window.innerHeight >= doc.scrollHeight - 2;
-      if (atBottom) setActive(SECTIONS[SECTIONS.length - 1]!.id);
-    };
-    window.addEventListener("scroll", onScroll, { passive: true });
+      const line = window.innerHeight * 0.35;
 
+      // Page scrolled to (or near) the bottom: always highlight the last
+      // section — it may sit entirely below the band line.
+      if (window.scrollY + window.innerHeight >= doc.scrollHeight - 2) {
+        setActive((prev) => (prev === SECTIONS[SECTIONS.length - 1]!.id ? prev : SECTIONS[SECTIONS.length - 1]!.id));
+        return;
+      }
+
+      let current: string = SECTIONS[0].id;
+      for (const { id } of SECTIONS) {
+        const el = document.getElementById(id);
+        if (el && el.getBoundingClientRect().top <= line) current = id;
+      }
+      setActive((prev) => (prev === current ? prev : current));
+    };
+
+    const onScroll = () => {
+      if (!raf) raf = requestAnimationFrame(update);
+    };
+
+    update();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll, { passive: true });
+    // Anchor navigation (deep links, back/forward) can jump without a scroll
+    // event firing after load — recompute on hash changes and once more after
+    // layout/fonts settle.
+    const onHash = () => {
+      update();
+      setTimeout(update, 600); // after smooth scroll (if any) settles
+    };
+    window.addEventListener("hashchange", onHash);
+    const settle = setTimeout(update, 600);
     return () => {
-      observer.disconnect();
+      if (raf) cancelAnimationFrame(raf);
+      clearTimeout(settle);
       window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+      window.removeEventListener("hashchange", onHash);
     };
   }, []);
 

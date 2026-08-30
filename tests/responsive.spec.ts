@@ -130,4 +130,28 @@ test.describe("responsive layout", () => {
       await expect(cards.nth(i)).toBeVisible();
     }
   });
+
+  test("reveal animation: no content above the reading line is ever faded", async ({ page }) => {
+    await page.goto("/", { waitUntil: "networkidle" });
+    const max = await page.evaluate(() => document.documentElement.scrollHeight - window.innerHeight);
+    const bad: string[] = [];
+    for (let i = 0; i <= 10; i++) {
+      await page.evaluate((y) => window.scrollTo(0, y), Math.round((max * i) / 10));
+      await page.waitForTimeout(200);
+      const stuck = await page.evaluate(() => {
+        const out: string[] = [];
+        const line = window.innerHeight * 0.35;
+        for (const el of Array.from(document.querySelectorAll(".reveal"))) {
+          const cs = getComputedStyle(el);
+          const r = el.getBoundingClientRect();
+          if (r.top < line && r.bottom > 0 && Number(cs.opacity) < 0.99) {
+            out.push(`opacity=${cs.opacity} top=${Math.round(r.top)}`);
+          }
+        }
+        return out;
+      });
+      bad.push(...stuck);
+    }
+    expect(bad, bad.join(" | ")).toEqual([]);
+  });
 });
