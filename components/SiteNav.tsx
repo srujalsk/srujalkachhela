@@ -41,7 +41,22 @@ export default function SiteNav() {
       const el = document.getElementById(id);
       if (el) observer.observe(el);
     }
-    return () => observer.disconnect();
+
+    // Bottom-of-page fallback: the last section may never reach the
+    // observer's intersection band because the page stops scrolling first
+    // (bottom-anchored content). When the page is at max scroll, highlight
+    // the last section.
+    const onScroll = () => {
+      const doc = document.documentElement;
+      const atBottom = window.scrollY + window.innerHeight >= doc.scrollHeight - 2;
+      if (atBottom) setActive(SECTIONS[SECTIONS.length - 1]!.id);
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+
+    return () => {
+      observer.disconnect();
+      window.removeEventListener("scroll", onScroll);
+    };
   }, []);
 
   return (
