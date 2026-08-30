@@ -1,6 +1,6 @@
 ---
 company: Agoda
-role: Senior Software Engineer
+role: Technical Lead
 location: Bangkok, Thailand
 start: "2025-01"
 end: present

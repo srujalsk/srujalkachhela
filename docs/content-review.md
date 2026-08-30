@@ -9,7 +9,7 @@
 
 | # | Topic | CV says | LinkedIn says | Public site currently uses |
 |---|-------|---------|---------------|----------------------------|
-| 1 | Agoda title | Senior Software Engineer, January 2025 – Present | Lead Software Engineer (no dates shown) | **Senior Software Engineer**, Jan 2025 – Present (CV) |
+| 1 | Agoda title | Senior Software Engineer, January 2025 – Present | Lead Software Engineer (no dates shown) | **Technical Lead** (resolved by Srujal, 2026-08-30) |
 | 2 | vConstruct role/dates | Technical Lead, October 2019 – January 2025 | Engineering Technical Lead May 2022 – Jan 2025; Senior Software Engineer Oct 2019 – May 2022 | **Technical Lead**, Oct 2019 – Jan 2025 (CV) |
 | 3 | Persistent Systems dates | August 2015 – October 2019 | October 2016 – October 2019 | **Aug 2015 – Oct 2019** (CV) |
 
