@@ -1,6 +1,6 @@
 ---
 company: Agoda
-role: Technical Lead
+role: Lead Software Engineer
 location: Bangkok, Thailand
 start: "2025-01"
 end: present

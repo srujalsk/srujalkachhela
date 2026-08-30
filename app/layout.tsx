@@ -32,8 +32,8 @@ export function generateMetadata(): Metadata {
     description: site.description,
     keywords: [
       "Srujal Kachhela",
-      "Technical Lead",
       "Full Stack Developer",
+      "Lead Software Engineer",
       "Software Engineer Bangkok",
       "React developer Thailand",
       "micro-frontends",

@@ -9,13 +9,13 @@
 
 | # | Topic | CV says | LinkedIn says | Public site currently uses |
 |---|-------|---------|---------------|----------------------------|
-| 1 | Agoda title | Senior Software Engineer, January 2025 – Present | Lead Software Engineer (no dates shown) | **Technical Lead** (resolved by Srujal, 2026-08-30) |
+| 1 | Agoda title | Senior Software Engineer, January 2025 – Present | Lead Software Engineer (no dates shown) | **Lead Software Engineer** (resolved by Srujal, 2026-08-30) |
 | 2 | vConstruct role/dates | Technical Lead, October 2019 – January 2025 | Engineering Technical Lead May 2022 – Jan 2025; Senior Software Engineer Oct 2019 – May 2022 | **Technical Lead**, Oct 2019 – Jan 2025 (CV) |
 | 3 | Persistent Systems dates | August 2015 – October 2019 | October 2016 – October 2019 | **Aug 2015 – Oct 2019** (CV) |
 
 ## Safe-title policy
 
-Resolved by Srujal on 2026-08-30: the site title is now **"Technical Lead"** (`safeTitle` in `content/profile.md`).
+Resolved by Srujal on 2026-08-30: the site title is now **"Full Stack Developer"** (`safeTitle` in `content/profile.md`); the tagline and site metadata no longer mention Technical Lead. Agoda uses **Lead Software Engineer** (matches LinkedIn).
 Conflict #1 (Agoda title) remains recorded below; the Agoda entry keeps the CV role for the employment record.
 
 ## How to resolve
