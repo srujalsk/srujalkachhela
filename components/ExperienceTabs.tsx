@@ -17,10 +17,9 @@ function formatMonth(value: string): string {
 }
 
 /**
- * Brittany Chiang-style experience: vertical list of company tabs on the
- * left; the selected job's details render on the right. Keyboard accessible
- * per WAI-ARIA tabs pattern (roving tabindex, arrow keys). Tabs wrap into
- * pills on small screens.
+ * Experience: companies render as one flat inline row of tab buttons above
+ * the selected role's details (no side sub-navigation). Keyboard accessible
+ * per WAI-ARIA tabs pattern (roving tabindex, arrow keys).
  */
 export default function ExperienceTabs({ entries }: { entries: Experience[] }) {
   const [selected, setSelected] = useState(0);
@@ -45,14 +44,14 @@ export default function ExperienceTabs({ entries }: { entries: Experience[] }) {
   };
 
   return (
-    <div className="mt-10 flex flex-col gap-6 md:flex-row md:gap-10">
+    <div className="mt-10 flex flex-col gap-8">
       {/* Company tabs */}
       <div
         role="tablist"
         aria-label="Work history"
-        aria-orientation="vertical"
+        aria-orientation="horizontal"
         onKeyDown={onKeyDown}
-        className="flex flex-row flex-wrap gap-1 md:flex-col md:flex-nowrap md:gap-0 md:border-l md:border-ink-700"
+        className="flex flex-row flex-wrap gap-2"
       >
         {entries.map((e, i) => {
           const isActive = i === selected;
@@ -68,10 +67,10 @@ export default function ExperienceTabs({ entries }: { entries: Experience[] }) {
               aria-controls={`exp-panel-${i}`}
               tabIndex={isActive ? 0 : -1}
               onClick={() => setSelected(i)}
-              className={`relative min-w-0 whitespace-normal rounded-md border-b-2 px-3 py-2 text-left font-mono text-sm transition-colors md:min-h-11 md:w-full md:rounded-none md:border-b-0 ${
+              className={`inline-flex min-h-11 items-center whitespace-normal rounded-md border px-3.5 font-mono text-sm transition-colors ${
                 isActive
-                  ? "border-accent-500 text-accent-400 md:bg-accent-500/10"
-                  : "border-transparent text-paper-400 hover:bg-ink-800 hover:text-paper-300"
+                  ? "border-accent-500 bg-accent-500/10 text-accent-400"
+                  : "border-ink-700 text-paper-400 hover:border-ink-600 hover:bg-ink-800 hover:text-paper-300"
               }`}
             >
               {e.company}

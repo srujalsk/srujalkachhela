@@ -74,7 +74,7 @@ test.describe("home page rendering", () => {
   });
 
   test("renders experience as company tabs", async ({ page }) => {
-    // Experience is now a Brittany Chiang-style tab list: one tab per company
+    // Experience is a flat inline tab row: one tab per company
     const tabs = page.getByRole("tab");
     await expect(tabs).toHaveCount(4);
     await expect(page.locator("#experience")).toContainText("Agoda");
