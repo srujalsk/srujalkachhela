@@ -24,8 +24,8 @@ highlights:
   - Established end-to-end CI/CD pipelines for the platform.
 ---
 
-Led multiple Agile engineering teams building large-scale construction-technology lifecycle applications.
+I led Agile teams building construction-technology lifecycle applications.
 
-Owned the front-end platform architecture — a lean micro-frontend React framework with a shared design system distributed as NPM packages — which cut a significant share of repetitive developer effort across teams.
+I owned the front-end platform: a lean micro-frontend React framework with a shared design system shipped as NPM packages. It cut repetitive work across teams by more than 30%.
 
-Designed and built the serverless integration layer around it: event-driven workflows, real-time notifications, managed APIs, and the CI/CD pipelines that shipped all of it.
+Around it I built the serverless layer: event-driven workflows, real-time notifications, managed APIs, and the CI/CD pipelines that shipped it all.

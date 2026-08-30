@@ -19,8 +19,8 @@ highlights:
   - Range-based allocation service for cross-data-centre allocations, reducing data-centre range wastage by up to 80%.
 ---
 
-Working on identity and account-linking systems at travel scale — social and messaging-platform login integrations serving users across APAC markets.
+I build identity and account-linking systems at travel scale: social and messaging-platform logins used across APAC markets.
 
-Building the platform services behind them: dynamic developer-token issuance with custom claims, and a range-based allocation service that keeps cross-data-centre resource usage efficient.
+I also own the platform services behind them, like dynamic developer-token issuance with custom claims and a range-based allocation service that keeps cross-data-centre wastage down.
 
-The work pairs React and TypeScript frontends with Java microservices, tuned for high-traffic production systems.
+React and TypeScript on the front, Java microservices behind, at traffic levels that punish carelessness.

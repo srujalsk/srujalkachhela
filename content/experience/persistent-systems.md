@@ -26,8 +26,8 @@ highlights:
   - Jenkins, MSBuild, Coded UI, and WiX Toolset build and test automation.
 ---
 
-Led delivery across enterprise web and cloud projects, owning both application development and the infrastructure beneath it.
+I led delivery on enterprise web and cloud projects, doing both the application work and the infrastructure underneath.
 
-Focused on AWS infrastructure as code with CloudFormation, IoT Core device integration, and Lambda APIs built on .NET Core and Node.js.
+Most of my time went to AWS: CloudFormation for infrastructure as code, IoT Core device integration, and Lambda APIs in .NET Core and Node.js.
 
-Rounded out the platform with CodeBuild/CodePipeline automation, VPC networking and security, and Jenkins-based build and test automation for .NET and AngularJS applications.
+The rest was automation and plumbing: CodeBuild and CodePipeline, VPC networking and security, and Jenkins builds for .NET and AngularJS apps.

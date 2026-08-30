@@ -17,8 +17,8 @@ highlights:
   - Provided SAP Solution Manager and ITIL consultancy for an enterprise UK implementation.
 ---
 
-Early-career software engineering across web and desktop applications.
+I started out building web and desktop applications.
 
-Built an expert-based rule evaluation engine that powered an AI-based desktop application.
+One highlight was an expert-based rule evaluation engine that powered an AI-based desktop app.
 
-Also provided SAP Solution Manager and ITIL consultancy supporting an enterprise implementation for a UK-based customer.
+I also did SAP Solution Manager and ITIL consultancy for an enterprise implementation in the UK.
