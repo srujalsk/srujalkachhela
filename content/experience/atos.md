@@ -10,15 +10,9 @@ stack:
   - Desktop Applications
   - Rule Evaluation Engine
   - SAP Solution Manager
-  - ITIL
 highlights:
-  - Built web and desktop applications.
-  - Implemented an expert-based rule evaluation engine for an AI-based desktop application.
-  - Provided SAP Solution Manager and ITIL consultancy for an enterprise UK implementation.
+  - Built web and desktop apps, including an expert-based rule evaluation engine for an AI-based desktop product.
+  - Did SAP Solution Manager and ITIL consultancy for a UK enterprise implementation.
 ---
 
-I started out building web and desktop applications.
-
-One highlight was an expert-based rule evaluation engine that powered an AI-based desktop app.
-
-I also did SAP Solution Manager and ITIL consultancy for an enterprise implementation in the UK.
+Where I started out, shipping small applications and learning what production means.

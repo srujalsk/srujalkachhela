@@ -11,21 +11,10 @@ stack:
   - Azure Web PubSub
   - Azure Event Grid
   - Azure API Management
-  - Office Fabric UI
-  - DevExtreme Data Grid
-  - Syncfusion
-  - Bing Maps
-  - Material UI
   - SQL Server
 highlights:
-  - Led multiple Agile engineering teams delivering construction-technology lifecycle applications.
-  - Designed a lean micro-frontend React framework using a shared design system and NPM packages, saving more than 30% of developer effort.
-  - Built serverless, event-driven integrations connecting web applications with third-party systems.
-  - Established end-to-end CI/CD pipelines for the platform.
+  - Led Agile teams building construction-technology apps on a lean micro-frontend React framework, cutting developer effort by more than 30%.
+  - "Built the serverless layer around it: event-driven workflows, real-time notifications, managed APIs, and CI/CD."
 ---
 
-I led Agile teams building construction-technology lifecycle applications.
-
-I owned the front-end platform: a lean micro-frontend React framework with a shared design system shipped as NPM packages. It cut repetitive work across teams by more than 30%.
-
-Around it I built the serverless layer: event-driven workflows, real-time notifications, managed APIs, and the CI/CD pipelines that shipped it all.
+I owned the front-end platform, a shared design system shipped as NPM packages, and the Azure integrations that connected everything.
