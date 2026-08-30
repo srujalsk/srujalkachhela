@@ -22,7 +22,7 @@ export default function ExperienceList({ entries }: { entries: Experience[] }) {
   if (entries.length === 0) return null;
 
   return (
-    <div className="mt-10 flex flex-col gap-14">
+    <div className="mt-10 flex max-w-3xl flex-col gap-14">
       {entries.map((e) => (
         <article key={`${e.company}-${e.start}`}>
           <h3 className="text-lg font-bold text-paper-50 sm:text-xl">

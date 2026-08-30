@@ -4,7 +4,7 @@ import type { Profile } from "@/lib/content-schema";
 
 export default function Contact({ profile }: { profile: Profile }) {
   return (
-    <section id="contact" aria-labelledby="contact-heading" className="container-site py-20 sm:py-28">
+    <section id="contact" aria-labelledby="contact-heading" className="py-20 sm:py-28">
       <Reveal>
         <h2 id="contact-heading" className="flex items-baseline gap-4 font-mono text-xl sm:text-2xl font-bold text-paper-50">
           <span aria-hidden="true" className="text-accent-500 text-base">02.</span>

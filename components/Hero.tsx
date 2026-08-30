@@ -44,7 +44,7 @@ export default function Hero({ profile }: { profile: Profile }) {
           backgroundSize: "56px 56px",
         }}
       />
-      <div className="container-site relative pt-20 pb-16 sm:pt-28 sm:pb-24">
+      <div className="relative pt-20 pb-16 sm:pt-28 sm:pb-24">
         <ol className="space-y-1 font-mono text-sm text-accent-400">
           <li className="animate-rise">Hi, my name is</li>
         </ol>
