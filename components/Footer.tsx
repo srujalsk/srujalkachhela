@@ -10,7 +10,7 @@ const FOOTER_LINKS = [
 export default function Footer({ profile }: { profile: Profile }) {
   return (
     <footer className="border-t border-ink-800 bg-ink-900">
-      <div className="container-site py-12">
+      <div className="px-6 sm:px-10 lg:ml-60 lg:pl-14 lg:pr-10 xl:pr-20 py-12">
         <div className="flex flex-col gap-8 sm:flex-row sm:items-start sm:justify-between">
           <div>
             <Link href="/" className="font-mono text-sm text-accent-400 min-h-11 inline-flex items-center">
