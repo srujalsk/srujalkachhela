@@ -5,7 +5,7 @@ import { expect, test } from "@playwright/test";
 //   2. page content is offset by the rail width so nothing sits underneath it
 //   3. scroll-spy moves aria-current as the user scrolls
 
-const RAIL_WIDTH = 256; // lg:w-64
+const RAIL_WIDTH = 240; // lg:w-60
 
 test.describe("desktop left-rail navigation", () => {
   test.beforeEach(async ({ page }) => {

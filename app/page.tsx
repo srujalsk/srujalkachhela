@@ -65,7 +65,7 @@ export default function HomePage() {
 
         <main
           id="main-content"
-          className="min-w-0 flex-1 mx-auto w-full max-w-3xl px-6 sm:px-10 lg:px-0"
+          className="min-w-0 flex-1 mx-auto w-full max-w-3xl px-6 sm:px-10 lg:mx-0 lg:ml-60 lg:max-w-none lg:pl-14 lg:pr-10 xl:pr-20"
         >
           <Hero profile={profile} />
           <ImpactMetrics metrics={profile.metrics} />

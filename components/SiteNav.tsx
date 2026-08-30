@@ -13,8 +13,9 @@ const SECTIONS = [
 ] as const;
 
 /**
- * Fixed left rail (Brittany Chiang-style): logo, vertical numbered nav with
- * scroll-spy, social links at the bottom. Hidden below lg — the top bar +
+ * Fixed left rail (OpenViking-style "In this piece" index): eyebrow label,
+ * top-aligned numbered heading links with scroll-spy. Heading-level links
+ * only — no nested/sub-section entries. Hidden below lg — the top bar +
  * dialog handle mobile.
  */
 export default function SiteNav() {
@@ -37,7 +38,7 @@ export default function SiteNav() {
   }, []);
 
   return (
-    <header className="hidden lg:fixed lg:inset-y-0 lg:left-0 lg:w-64 lg:flex lg:flex-col lg:px-10 lg:py-10 lg:z-40">
+    <header className="hidden lg:fixed lg:inset-y-0 lg:left-0 lg:w-60 lg:flex lg:flex-col lg:px-8 lg:py-10 lg:z-40">
       {/* Logo */}
       <Link
         href="/#about"
@@ -47,34 +48,48 @@ export default function SiteNav() {
         {"<sk />"}
       </Link>
 
-      {/* Vertical section nav, vertically centered */}
-      <nav aria-label="Section" className="flex-1 flex flex-col justify-center">
-        <ul className="space-y-5">
+      {/* Top-aligned section index, OpenViking-style */}
+      <nav aria-label="Main" className="mt-14">
+        <p
+          id="rail-label"
+          className="font-mono text-[11px] font-semibold tracking-[0.2em] uppercase text-paper-400 mb-5"
+        >
+          In this piece
+        </p>
+        <ul aria-labelledby="rail-label" className="space-y-3.5">
           {SECTIONS.map(({ id, label }, i) => {
             const isActive = active === id;
             return (
-              <li key={id}>
+              <li key={id} className="flex items-start gap-2.5">
+                <span
+                  aria-hidden="true"
+                  className={`mt-[7px] h-px flex-none transition-all duration-300 ${
+                    isActive
+                      ? "w-3.5 bg-accent-400"
+                      : "w-0 group-hover:w-2.5 bg-paper-300 opacity-0 group-hover:opacity-100"
+                  }`}
+                />
                 <a
                   href={`#${id}`}
                   aria-current={isActive ? "true" : undefined}
-                  className="group inline-flex items-center gap-3 font-mono text-xs"
+                  className="group inline-flex items-baseline gap-2 text-sm leading-5 transition-colors duration-300"
                 >
                   <span
-                    aria-hidden="true"
-                    className={`h-px transition-all duration-300 ${
+                    className={`font-mono text-xs tabular-nums transition-colors duration-300 ${
                       isActive
-                        ? "w-8 bg-accent-400"
-                        : "w-4 bg-paper-400 group-hover:w-7 group-hover:bg-paper-300"
-                    }`}
-                  />
-                  <span
-                    className={`transition-colors duration-300 ${
-                      isActive
-                        ? "text-accent-400"
+                        ? "text-paper-50"
                         : "text-paper-400 group-hover:text-paper-300"
                     }`}
                   >
-                    <span className="mr-1.5 text-paper-300">0{i + 1}.</span>
+                    0{i + 1}
+                  </span>
+                  <span
+                    className={`transition-colors duration-300 ${
+                      isActive
+                        ? "font-semibold text-paper-50"
+                        : "text-paper-400 group-hover:text-paper-300"
+                    }`}
+                  >
                     {label}
                   </span>
                 </a>
@@ -85,7 +100,7 @@ export default function SiteNav() {
       </nav>
 
       {/* Social links at the bottom of the rail */}
-      <ul className="flex flex-col gap-4" aria-label="Social profiles">
+      <ul className="mt-auto flex flex-col gap-4" aria-label="Social profiles">
         <li>
           <a
             href="https://github.com/srujalsk"
