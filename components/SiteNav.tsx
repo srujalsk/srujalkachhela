@@ -18,12 +18,22 @@ const SECTIONS = [
 export default function SiteNav() {
   const [active, setActive] = useState<string>("about");
 
+  // Clicking a rail link should highlight it immediately instead of waiting
+  // for the smooth scroll to settle (the observer can lag or skip the target
+  // when the section sits against the bottom-of-page scroll limit).
+  const handleNavClick = (id: string) => setActive(id);
+
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
+        // Pick the intersecting section highest on screen, not loop order.
+        let best: { id: string; top: number } | null = null;
         for (const entry of entries) {
-          if (entry.isIntersecting) setActive(entry.target.id);
+          if (!entry.isIntersecting) continue;
+          const top = entry.boundingClientRect.top;
+          if (!best || top < best.top) best = { id: entry.target.id, top };
         }
+        if (best) setActive(best.id);
       },
       { rootMargin: "-30% 0px -55% 0px", threshold: 0 },
     );
@@ -68,6 +78,7 @@ export default function SiteNav() {
                 />
                 <a
                   href={`#${id}`}
+                  onClick={() => handleNavClick(id)}
                   aria-current={isActive ? "true" : undefined}
                   className="group inline-flex items-baseline gap-2 text-sm leading-5 transition-colors duration-300"
                 >
