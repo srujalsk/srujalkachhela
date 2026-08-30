@@ -30,11 +30,27 @@ export function generateMetadata(): Metadata {
       template: site.titleTemplate,
     },
     description: site.description,
+    keywords: [
+      "Srujal Kachhela",
+      "Technical Lead",
+      "Full Stack Developer",
+      "Software Engineer Bangkok",
+      "React developer Thailand",
+      "micro-frontends",
+      "serverless",
+      "Azure",
+      "AWS",
+      "Java microservices",
+      "TypeScript",
+      "engineering lead",
+    ],
+    authors: [{ name: site.author, url: site.siteUrl }],
+    creator: site.author,
     alternates: {
       canonical: "/",
     },
     openGraph: {
-      type: "website",
+      type: "profile",
       locale: site.locale,
       url: "/",
       siteName: site.defaultTitle,
@@ -50,7 +66,15 @@ export function generateMetadata(): Metadata {
     robots: {
       index: true,
       follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
+        "max-image-preview": "large",
+        "max-snippet": -1,
+        "max-video-preview": -1,
+      },
     },
+    category: "technology",
   };
 }
 

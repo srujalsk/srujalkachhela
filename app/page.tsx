@@ -15,28 +15,47 @@ export default function HomePage() {
   const jsonLd = [
     {
       "@context": "https://schema.org",
-      "@type": "Person",
-      name: profile.name,
-      jobTitle: profile.safeTitle,
-      email: `mailto:${profile.email}`,
-      url: absoluteUrl("/"),
-      address: {
-        "@type": "PostalAddress",
-        addressLocality: "Bangkok",
-        addressCountry: "TH",
-      },
-      sameAs: [profile.linkedin, profile.x],
-      alumniOf: [
-        { "@type": "CollegeOrUniversity", name: "University of Pune" },
-      ],
-    },
-    {
-      "@context": "https://schema.org",
       "@type": "WebSite",
       name: profile.name,
       url: absoluteUrl("/"),
       description: getSiteConfig().description,
       inLanguage: "en",
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "ProfilePage",
+      url: absoluteUrl("/"),
+      mainEntity: {
+        "@type": "Person",
+        name: profile.name,
+        jobTitle: profile.safeTitle,
+        description: profile.tagline,
+        email: `mailto:${profile.email}`,
+        url: absoluteUrl("/"),
+        address: {
+          "@type": "PostalAddress",
+          addressLocality: "Bangkok",
+          addressCountry: "TH",
+        },
+        sameAs: [profile.linkedin, profile.x],
+        alumniOf: [
+          { "@type": "CollegeOrUniversity", name: "University of Pune" },
+        ],
+        knowsAbout: [
+          "React",
+          "TypeScript",
+          "Java",
+          "Spring Boot",
+          "Node.js",
+          "Micro-frontends",
+          "Serverless architecture",
+          "Azure",
+          "AWS",
+          "GraphQL",
+          "Microservices",
+          "CI/CD",
+        ],
+      },
     },
   ];
 

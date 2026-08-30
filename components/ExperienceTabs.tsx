@@ -20,6 +20,9 @@ function formatMonth(value: string): string {
  * Experience: companies render as one flat inline row of tab buttons above
  * the selected role's details (no side sub-navigation). Keyboard accessible
  * per WAI-ARIA tabs pattern (roving tabindex, arrow keys).
+ *
+ * SEO: hidden panels are rendered with `hidden` (not unmounted) so crawlers
+ * see every role's content, and an sr-only paragraph lists all employers.
  */
 export default function ExperienceTabs({ entries }: { entries: Experience[] }) {
   const [selected, setSelected] = useState(0);
@@ -77,57 +80,68 @@ export default function ExperienceTabs({ entries }: { entries: Experience[] }) {
             </button>
           );
         })}
-      </div>
-
-      {/* Selected role details */}
-      <div
-        role="tabpanel"
-        id={`exp-panel-${selected}`}
-        aria-labelledby={`exp-tab-${selected}`}
-        tabIndex={0}
-        className="min-w-0 flex-1 focus-visible:outline-2 focus-visible:outline-accent-400"
-      >
-        <h3 className="text-lg font-bold text-paper-50 sm:text-xl">
-          {entry.role}{" "}
-          <span className="text-accent-400">@ {entry.company}</span>
-        </h3>
-        <p className="mt-2 font-mono text-xs text-paper-400">
-          {formatMonth(entry.start)} — {formatMonth(entry.end)}
-          {entry.location ? ` · ${entry.location}` : ""}
+        <p className="sr-only">
+          Career history: {entries.map((e) => `${e.role} at ${e.company}`).join("; ")}.
         </p>
-
-        {entry.highlights.length > 0 ? (
-          <ul className="mt-5 space-y-2.5">
-            {entry.highlights.map((h, j) => (
-              <li key={j} className="flex gap-3 text-sm leading-relaxed text-paper-300">
-                <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="mt-1 shrink-0 text-accent-500">
-                  <path d="M5 12l5 5L20 7" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
-                <span>{h}</span>
-              </li>
-            ))}
-          </ul>
-        ) : null}
-
-        {entry.body.trim() ? (
-          <div className="mt-4 space-y-4 text-sm leading-relaxed text-paper-300">
-            {entry.body.trim().split(/\n{2,}/).map((p, i) => (
-              <p key={i}>{p}</p>
-            ))}
-          </div>
-        ) : null}
-
-        {entry.stack.length > 0 ? (
-          <ul className="mt-6 flex flex-wrap gap-x-4 gap-y-1.5 font-mono text-xs text-paper-400" aria-label={`${entry.company} technology stack`}>
-            {entry.stack.map((tech) => (
-              <li key={tech} className="flex items-center gap-2">
-                <span aria-hidden="true" className="text-accent-500">▹</span>
-                {tech}
-              </li>
-            ))}
-          </ul>
-        ) : null}
       </div>
+
+      {/* Role details: every panel is prerendered (hidden when inactive) so
+          crawlers see all roles; only the selected one is visible. */}
+      {entries.map((e, i) => {
+        const isActive = i === selected;
+        return (
+          <div
+            key={`${e.company}-${e.start}`}
+            role="tabpanel"
+            id={`exp-panel-${i}`}
+            aria-labelledby={`exp-tab-${i}`}
+            tabIndex={isActive ? 0 : -1}
+            hidden={!isActive}
+            className="min-w-0 flex-1 focus-visible:outline-2 focus-visible:outline-accent-400"
+          >
+            <h3 className="text-lg font-bold text-paper-50 sm:text-xl">
+              {e.role}{" "}
+              <span className="text-accent-400">@ {e.company}</span>
+            </h3>
+            <p className="mt-2 font-mono text-xs text-paper-400">
+              {formatMonth(e.start)} — {formatMonth(e.end)}
+              {e.location ? ` · ${e.location}` : ""}
+            </p>
+
+            {e.highlights.length > 0 ? (
+              <ul className="mt-5 space-y-2.5">
+                {e.highlights.map((h, j) => (
+                  <li key={j} className="flex gap-3 text-sm leading-relaxed text-paper-300">
+                    <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="mt-1 shrink-0 text-accent-500">
+                      <path d="M5 12l5 5L20 7" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                    <span>{h}</span>
+                  </li>
+                ))}
+              </ul>
+            ) : null}
+
+            {e.body.trim() ? (
+              <div className="mt-4 space-y-4 text-sm leading-relaxed text-paper-300">
+                {e.body.trim().split(/\n{2,}/).map((p, i) => (
+                  <p key={i}>{p}</p>
+                ))}
+              </div>
+            ) : null}
+
+            {e.stack.length > 0 ? (
+              <ul className="mt-6 flex flex-wrap gap-x-4 gap-y-1.5 font-mono text-xs text-paper-400" aria-label={`${e.company} technology stack`}>
+                {e.stack.map((tech) => (
+                  <li key={tech} className="flex items-center gap-2">
+                    <span aria-hidden="true" className="text-accent-500">▹</span>
+                    {tech}
+                  </li>
+                ))}
+              </ul>
+            ) : null}
+          </div>
+        );
+      })}
     </div>
   );
 }
