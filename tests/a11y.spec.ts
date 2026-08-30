@@ -111,7 +111,7 @@ test.describe("keyboard navigation", () => {
     await page.goto("/");
     // With reduced motion the reveal utility must leave content visible immediately
     const opacity = await page.evaluate(() => {
-      const section = document.querySelector("#work h2");
+      const section = document.querySelector("#experience h2");
       return section ? getComputedStyle(section.closest(".reveal") ?? section).opacity : null;
     });
     // The reveal element may still start hidden if JS hasn't run; check CSS rule instead

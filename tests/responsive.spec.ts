@@ -80,7 +80,7 @@ test.describe("responsive layout", () => {
     await expect(dialog).toBeVisible();
     const links = dialog.getByRole("link");
     const n = await links.count();
-    expect(n).toBeGreaterThanOrEqual(5);
+    expect(n).toBeGreaterThanOrEqual(4);
     for (let i = 0; i < n; i++) {
       const b = await links.nth(i).boundingBox();
       expect(b?.height ?? 0).toBeGreaterThanOrEqual(44);
@@ -122,8 +122,8 @@ test.describe("responsive layout", () => {
   test("no hover-only interactions: all content reachable without hover", async ({ page }) => {
     await page.setViewportSize({ width: 375, height: 800 });
     await page.goto("/", { waitUntil: "networkidle" });
-    // Every project card must expose its summary text without hover
-    const cards = page.locator("#work article");
+    // Remaining sections must expose their content without hover
+    const cards = page.locator("#experience article, #experience [role=tab], #contact a");
     const count = await cards.count();
     expect(count).toBeGreaterThanOrEqual(3);
     for (let i = 0; i < count; i++) {

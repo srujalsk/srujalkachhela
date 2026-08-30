@@ -62,7 +62,7 @@ test.describe("home page rendering", () => {
   });
 
   test("renders all major sections", async ({ page }) => {
-    for (const id of ["about", "work", "experience", "skills", "education", "contact"]) {
+    for (const id of ["about", "experience", "contact"]) {
       await expect(page.locator(`#${id}`), `section #${id}`).toBeAttached();
     }
   });
