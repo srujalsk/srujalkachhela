@@ -67,12 +67,6 @@ test.describe("home page rendering", () => {
     }
   });
 
-  test("renders four impact metrics", async ({ page }) => {
-    const metrics = page.locator("[aria-label='Impact highlights'] dd");
-    await expect(metrics).toHaveCount(4);
-    await expect(metrics.first()).toContainText("%");
-  });
-
   test("renders experience as company tabs", async ({ page }) => {
     // Experience is a flat inline tab row: one tab per company
     const tabs = page.getByRole("tab");

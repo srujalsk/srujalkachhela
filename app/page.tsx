@@ -1,7 +1,7 @@
 import Contact from "@/components/Contact";
 import ExperienceTabs from "@/components/ExperienceTabs";
 import Footer from "@/components/Footer";
-import Hero, { ImpactMetrics } from "@/components/Hero";
+import Hero from "@/components/Hero";
 import MobileNav from "@/components/MobileNav";
 import Reveal from "@/components/Reveal";
 import SiteNav from "@/components/SiteNav";
@@ -57,8 +57,6 @@ export default function HomePage() {
           className="min-w-0 flex-1 mx-auto w-full max-w-3xl px-6 sm:px-10 lg:mx-0 lg:ml-60 lg:max-w-none lg:pl-14 lg:pr-10 xl:pr-20"
         >
           <Hero profile={profile} />
-          <ImpactMetrics metrics={profile.metrics} />
-
           <section id="experience" aria-labelledby="experience-heading" className="scroll-mt-24 py-20">
             <Reveal>
               <h2 id="experience-heading" className="flex items-baseline gap-4 font-mono text-xl sm:text-2xl font-bold text-paper-50">

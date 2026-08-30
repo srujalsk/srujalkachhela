@@ -1,4 +1,3 @@
-import Reveal from "./Reveal";
 import type { Profile } from "@/lib/content-schema";
 
 /** Decorative data-flow signal line (pure SVG, hidden from AT). */
@@ -99,22 +98,5 @@ export default function Hero({ profile }: { profile: Profile }) {
         <SignalLine />
       </div>
     </section>
-  );
-}
-
-export function ImpactMetrics({ metrics }: { metrics: Profile["metrics"] }) {
-  return (
-    <Reveal>
-      <section aria-label="Impact highlights" className="border-y border-ink-800 bg-ink-900">
-        <dl className="container-site grid grid-cols-1 xs:grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-10 py-14">
-          {metrics.map((m) => (
-            <div key={m.label} className="border-l-2 border-accent-500 pl-4">
-              <dt className="order-2 mt-2 block text-sm leading-snug text-paper-300">{m.label}</dt>
-              <dd className="order-1 font-mono text-4xl font-bold text-accent-400">{m.value}</dd>
-            </div>
-          ))}
-        </dl>
-      </section>
-    </Reveal>
   );
 }
