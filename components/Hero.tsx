@@ -68,7 +68,7 @@ export default function Hero({ profile }: { profile: Profile }) {
 
         <div className="mt-10 flex flex-wrap items-center gap-4 animate-rise [animation-delay:320ms]">
           <a
-            href="#work"
+            href="#experience"
             className="inline-flex min-h-12 items-center rounded-md bg-accent-500 px-6 font-mono text-sm font-semibold text-ink-950 hover:bg-accent-400 transition-colors"
           >
             View work

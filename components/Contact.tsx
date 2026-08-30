@@ -7,7 +7,7 @@ export default function Contact({ profile }: { profile: Profile }) {
     <section id="contact" aria-labelledby="contact-heading" className="container-site py-20 sm:py-28">
       <Reveal>
         <h2 id="contact-heading" className="flex items-baseline gap-4 font-mono text-xl sm:text-2xl font-bold text-paper-50">
-          <span aria-hidden="true" className="text-accent-500 text-base">05.</span>
+          <span aria-hidden="true" className="text-accent-500 text-base">02.</span>
           Get in touch
         </h2>
         <p className="mt-6 max-w-xl text-base leading-relaxed text-paper-300">

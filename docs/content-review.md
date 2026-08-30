@@ -15,8 +15,8 @@
 
 ## Safe-title policy
 
-Until conflict #1 is resolved, the site uses the neutral title **"Senior Software Engineer / Technical Lead"**
-(`safeTitle` in `content/profile.md`) instead of claiming "Lead" or "Engineering Technical Lead".
+Resolved by Srujal on 2026-08-30: the site title is now **"Technical Lead"** (`safeTitle` in `content/profile.md`).
+Conflict #1 (Agoda title) remains recorded below; the Agoda entry keeps the CV role for the employment record.
 
 ## How to resolve
 

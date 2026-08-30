@@ -3,10 +3,7 @@ import type { Profile } from "@/lib/content-schema";
 
 const FOOTER_LINKS = [
   { href: "/#about", label: "About" },
-  { href: "/#work", label: "Work" },
   { href: "/#experience", label: "Experience" },
-  { href: "/#skills", label: "Skills" },
-  { href: "/#education", label: "Education" },
   { href: "/#contact", label: "Contact" },
 ] as const;
 

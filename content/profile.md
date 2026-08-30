@@ -1,6 +1,6 @@
 ---
 name: Srujal Kachhela
-safeTitle: Senior Software Engineer / Technical Lead
+safeTitle: Technical Lead
 tagline: "Full Stack Developer and Technical Lead in Bangkok with 11+ years building cloud and on-premises systems: micro-frontends, serverless integrations, real-time platforms."
 location: Bangkok, Thailand
 email: srujal.k@gmail.com
