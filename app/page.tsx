@@ -89,7 +89,7 @@ export default function HomePage() {
           <Contact profile={profile} />
         </main>
       </div>
-      <Footer profile={profile} />
+      {getSiteConfig().showFooter ? <Footer profile={profile} /> : null}
     </>
   );
 }

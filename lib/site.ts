@@ -13,6 +13,7 @@ export function getSiteConfig(): SiteConfig {
       "Full Stack Developer and Technical Lead in Bangkok with 11+ years of experience across cloud and on-premises systems: Azure, AWS, .NET, React, and distributed integrations.",
     author: "Srujal Kachhela",
     locale: "en",
+    showFooter: false,
   };
 }
 

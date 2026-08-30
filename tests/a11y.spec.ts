@@ -137,7 +137,8 @@ test.describe("keyboard navigation", () => {
     await expect(page.getByRole("banner")).toHaveCount(1);
     await expect(page.getByRole("navigation").first()).toBeAttached();
     await expect(page.getByRole("main")).toHaveCount(1);
-    await expect(page.getByRole("contentinfo")).toHaveCount(1);
+    // Footer is hidden by config (showFooter: false) — contentinfo is optional
+    await expect(page.getByRole("contentinfo")).toHaveCount(0);
   });
 
   test("headings follow a logical hierarchy", async ({ page }) => {
