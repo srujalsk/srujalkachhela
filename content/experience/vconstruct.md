@@ -1,7 +1,7 @@
 ---
 company: vConstruct (a DPR Construction company)
 role: Technical Lead
-location: Pune, India
+location: India
 start: "2019-10"
 end: "2025-01"
 order: 2
