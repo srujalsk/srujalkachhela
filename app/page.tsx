@@ -1,5 +1,5 @@
 import Contact from "@/components/Contact";
-import ExperienceTabs from "@/components/ExperienceTabs";
+import ExperienceList from "@/components/ExperienceList";
 import Footer from "@/components/Footer";
 import Hero from "@/components/Hero";
 import MobileNav from "@/components/MobileNav";
@@ -83,7 +83,7 @@ export default function HomePage() {
                 Where I&apos;ve worked
               </h2>
             </Reveal>
-            <ExperienceTabs entries={experience} />
+            <ExperienceList entries={experience} />
           </section>
 
           <Contact profile={profile} />

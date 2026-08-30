@@ -123,7 +123,7 @@ test.describe("responsive layout", () => {
     await page.setViewportSize({ width: 375, height: 800 });
     await page.goto("/", { waitUntil: "networkidle" });
     // Remaining sections must expose their content without hover
-    const cards = page.locator("#experience article, #experience [role=tab], #contact a");
+    const cards = page.locator("#experience article, #contact a");
     const count = await cards.count();
     expect(count).toBeGreaterThanOrEqual(3);
     for (let i = 0; i < count; i++) {

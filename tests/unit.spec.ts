@@ -67,19 +67,17 @@ test.describe("home page rendering", () => {
     }
   });
 
-  test("renders experience as company tabs", async ({ page }) => {
-    // Experience is a flat inline tab row: one tab per company
-    const tabs = page.getByRole("tab");
-    await expect(tabs).toHaveCount(4);
-    await expect(page.locator("#experience")).toContainText("Agoda");
-    await expect(page.locator("#experience")).toContainText("vConstruct");
-    await expect(page.locator("#experience")).toContainText("Persistent Systems");
-    await expect(page.locator("#experience")).toContainText("Atos India");
-
-    // Selecting a tab shows that role's details
-    await tabs.nth(1).click();
-    const panel = page.getByRole("tabpanel");
-    await expect(panel).toContainText("@ vConstruct");
+  test("renders experience as sequential role sub-sections", async ({ page }) => {
+    const roles = page.locator("#experience article h3");
+    await expect(roles).toHaveCount(4);
+    await expect(roles.nth(0)).toContainText("@ Agoda");
+    await expect(roles.nth(1)).toContainText("@ vConstruct");
+    await expect(roles.nth(2)).toContainText("@ Persistent Systems");
+    await expect(roles.nth(3)).toContainText("@ Atos India");
+    // All details are visible on the page at once (no hidden panels)
+    for (let i = 0; i < 4; i++) {
+      await expect(roles.nth(i)).toBeVisible();
+    }
   });
 
   test("no CV download button when cvPath is empty", async ({ page }) => {
