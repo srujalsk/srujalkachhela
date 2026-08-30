@@ -22,13 +22,16 @@ export default function SiteNav() {
   // smooth scroll arrives: without the pin, scroll events fired mid-flight
   // would overwrite it with whatever section the passing viewport shows.
   const suppressRef = useRef(false);
+  const pinTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const handleNavClick = (id: string) => {
     setActive(id);
     // Pin the choice while the smooth scroll flies: mid-flight scroll events
     // would otherwise overwrite it with whatever section passes through the
-    // band. Release after the scroll has had time to arrive.
+    // band. Release after the scroll has had time to arrive. Clear any pin
+    // a previous click left — a stale release must not end this pin early.
     suppressRef.current = true;
-    setTimeout(() => {
+    if (pinTimerRef.current) clearTimeout(pinTimerRef.current);
+    pinTimerRef.current = setTimeout(() => {
       suppressRef.current = false;
     }, 1400);
   };
@@ -80,6 +83,7 @@ export default function SiteNav() {
     const settle = setTimeout(update, 600);
     return () => {
       if (raf) cancelAnimationFrame(raf);
+      if (pinTimerRef.current) clearTimeout(pinTimerRef.current);
       clearTimeout(settle);
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", onScroll);

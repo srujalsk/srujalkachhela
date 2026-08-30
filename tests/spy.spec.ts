@@ -130,6 +130,21 @@ test.describe("rail scroll-spy", () => {
     expect(await activeHref(page)).toBe("#contact");
   });
 
+  test("rapid double-click (Contact then Experience) pins the second click", async ({ page }) => {
+    await page.locator("#experience").scrollIntoViewIfNeeded();
+    await page.waitForTimeout(300);
+    const contactLink = page.locator('nav[aria-label="Main"] a[href="#contact"]');
+    const expLink = page.locator('nav[aria-label="Main"] a[href="#experience"]');
+    await contactLink.click();
+    await expLink.click(); // immediately after
+    await page.waitForTimeout(300);
+    // Experience (the last-clicked) must still be highlighted
+    expect(await activeHref(page)).toBe("#experience");
+    // and after the pin fully expires, still experience (scroll has settled there)
+    await page.waitForTimeout(2000);
+    expect(await activeHref(page)).toBe("#experience");
+  });
+
   test("exactly one item is ever highlighted", async ({ page }) => {
     const max = await page.evaluate(() => document.documentElement.scrollHeight - window.innerHeight);
     for (let i = 0; i <= 10; i++) {
