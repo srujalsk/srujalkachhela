@@ -22,18 +22,13 @@ export default function SiteNav() {
   // smooth scroll arrives: without the pin, scroll events fired mid-flight
   // would overwrite it with whatever section the passing viewport shows.
   const suppressRef = useRef(false);
-  const pinTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const handleNavClick = (id: string) => {
     setActive(id);
     // Pin the choice while the smooth scroll flies: mid-flight scroll events
     // would otherwise overwrite it with whatever section passes through the
-    // band. Release after the scroll has had time to arrive. Clear any pin
-    // a previous click left — a stale release must not end this pin early.
+    // band. The spy releases the pin when scrolling actually settles (see
+    // useEffect), so any jump distance is handled without a magic timeout.
     suppressRef.current = true;
-    if (pinTimerRef.current) clearTimeout(pinTimerRef.current);
-    pinTimerRef.current = setTimeout(() => {
-      suppressRef.current = false;
-    }, 1400);
   };
 
   useEffect(() => {
@@ -43,16 +38,16 @@ export default function SiteNav() {
     // that doesn't change — e.g. scrolling up from a bottom-anchored Contact,
     // where Experience already spans the whole band.
     let raf = 0;
+    let lastY = -1;
+    let settleFrames = 0;
 
-    const update = () => {
-      raf = 0;
-      if (suppressRef.current) return;
+    const computeActive = () => {
       const doc = document.documentElement;
       const line = window.innerHeight * 0.35;
 
       // Page scrolled to (or near) the bottom: always highlight the last
       // section — it may sit entirely below the band line.
-      if (window.scrollY + window.innerHeight >= doc.scrollHeight - 2) {
+      if (window.scrollY + window.innerHeight >= doc.scrollHeight - 4) {
         setActive((prev) => (prev === SECTIONS[SECTIONS.length - 1]!.id ? prev : SECTIONS[SECTIONS.length - 1]!.id));
         return;
       }
@@ -65,26 +60,63 @@ export default function SiteNav() {
       setActive((prev) => (prev === current ? prev : current));
     };
 
-    const onScroll = () => {
-      if (!raf) raf = requestAnimationFrame(update);
+    const check = () => {
+      raf = 0;
+      if (!suppressRef.current) {
+        computeActive();
+        return;
+      }
+      // Pinned: watch for the smooth scroll to settle — 3 consecutive frames
+      // (~50ms) at the same position — then release and compute normally.
+      // An independent rAF loop is required: the final scroll event of a
+      // smooth scroll is the last one, so settle can't be detected from
+      // scroll events alone.
+      const y = window.scrollY;
+      settleFrames = y === lastY ? settleFrames + 1 : 0;
+      lastY = y;
+      if (settleFrames >= 3) {
+        suppressRef.current = false;
+        settleFrames = 0;
+        computeActive();
+        return;
+      }
+      raf = requestAnimationFrame(check);
     };
 
-    update();
+    const onScroll = () => {
+      if (raf) return;
+      raf = requestAnimationFrame(check);
+    };
+
+    computeActive();
+    // Re-check after load settles: the browser's initial hash jump and late
+    // layout shifts (fonts, images) can land before/after this effect runs.
+    const settle1 = setTimeout(onScroll, 300);
+    const settle2 = setTimeout(onScroll, 1000);
     window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("resize", onScroll, { passive: true });
     // Anchor navigation (deep links, back/forward) can jump without a scroll
-    // event firing after load — recompute on hash changes and once more after
-    // layout/fonts settle.
+    // event firing after load — pin through the jump and recompute on settle.
     const onHash = () => {
-      update();
-      setTimeout(update, 600); // after smooth scroll (if any) settles
+      suppressRef.current = true;
+      lastY = -1;
+      settleFrames = 0;
+      onScroll();
+      // Safety net: if the rAF settle loop can't detect settle (no further
+      // frames), release anyway — a recomputed-but-possibly-briefly-wrong
+      // highlight beats a frozen one.
+      setTimeout(() => {
+        if (suppressRef.current) {
+          suppressRef.current = false;
+          computeActive();
+        }
+      }, 2000);
     };
     window.addEventListener("hashchange", onHash);
-    const settle = setTimeout(update, 600);
     return () => {
       if (raf) cancelAnimationFrame(raf);
-      if (pinTimerRef.current) clearTimeout(pinTimerRef.current);
-      clearTimeout(settle);
+      clearTimeout(settle1);
+      clearTimeout(settle2);
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", onScroll);
       window.removeEventListener("hashchange", onHash);

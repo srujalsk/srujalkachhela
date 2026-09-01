@@ -149,3 +149,12 @@
     transform: none;
   }
 }
+
+/* Printing / find-in-page: content must never render faded */
+@media print {
+  .reveal {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
