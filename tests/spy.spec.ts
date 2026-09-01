@@ -12,10 +12,39 @@ async function activeHref(page: import("@playwright/test").Page): Promise<string
   return page.evaluate(() => document.querySelector('nav[aria-label="Main"] a[aria-current="true"]')?.getAttribute("href") ?? null);
 }
 
+async function expectActive(page: import("@playwright/test").Page, href: string): Promise<void> {
+  // Poll instead of sleeping: robust against slow CI machines and rAF jitter.
+  await expect
+    .poll(() => activeHref(page), { timeout: 3000, intervals: [50, 100, 250] })
+    .toBe(href);
+}
+
 async function scrollTo(page: import("@playwright/test").Page, y: number): Promise<void> {
   await page.evaluate((v) => window.scrollTo(0, v), y);
-  // rAF-throttled spy + smooth-scroll override: wait two frames minimum
-  await page.waitForTimeout(250);
+  // rAF-throttled spy: poll until the highlight updates rather than
+  // sleeping a fixed duration — robust on slow CI machines.
+  await page
+    .waitForFunction(
+      (v) => {
+        const doc = document.documentElement;
+        const line = window.innerHeight * 0.35;
+        let expected: string;
+        if (window.scrollY + window.innerHeight >= doc.scrollHeight - 4) {
+          expected = [...document.querySelectorAll("section[id]")].pop()!.id;
+        } else {
+          let current = document.querySelectorAll("section[id]")[0]!.id;
+          for (const s of document.querySelectorAll<HTMLElement>("section[id]")) {
+            if (s.getBoundingClientRect().top <= line) current = s.id;
+          }
+          expected = current;
+        }
+        return document.querySelector('nav[aria-label="Main"] a[aria-current="true"]')?.getAttribute("href") === `#${expected}` || window.scrollY === v;
+      },
+      y,
+      { timeout: 2000 },
+    )
+    .catch(() => {});
+  await page.waitForTimeout(100);
 }
 
 test.describe("rail scroll-spy", () => {
@@ -35,14 +64,12 @@ test.describe("rail scroll-spy", () => {
       const el = document.getElementById("experience")!;
       window.scrollTo(0, el.getBoundingClientRect().top + window.scrollY - window.innerHeight * 0.3);
     });
-    await page.waitForTimeout(250);
-    expect(await activeHref(page)).toBe("#experience");
+    await expectActive(page, "#experience");
   });
 
   test("Contact activates at exact max scroll (bottom-anchored fallback)", async ({ page }) => {
     await page.evaluate(() => window.scrollTo(0, document.documentElement.scrollHeight));
-    await page.waitForTimeout(250);
-    expect(await activeHref(page)).toBe("#contact");
+    await expectActive(page, "#contact");
   });
 
   test("Contact stays active when overscrolling/bouncing at the bottom", async ({ page }) => {
@@ -50,24 +77,21 @@ test.describe("rail scroll-spy", () => {
     await page.waitForTimeout(250);
     // simulate elastic overscroll attempts
     await page.evaluate(() => window.scrollTo(0, document.documentElement.scrollHeight + 500));
-    await page.waitForTimeout(250);
-    expect(await activeHref(page)).toBe("#contact");
+    await expectActive(page, "#contact");
   });
 
   test("Experience re-activates when scrolling back UP from Contact (regression)", async ({ page }) => {
     await page.evaluate(() => window.scrollTo(0, document.documentElement.scrollHeight));
-    await page.waitForTimeout(250);
-    expect(await activeHref(page)).toBe("#contact");
+    await expectActive(page, "#contact");
 
     // scroll up ~400px: experience section now spans the band
     await page.evaluate(() => window.scrollBy(0, -400));
-    await page.waitForTimeout(250);
-    expect(await activeHref(page)).toBe("#experience");
+    await expectActive(page, "#experience");
   });
 
   test("About re-activates when scrolling back to the top from below", async ({ page }) => {
     await page.evaluate(() => window.scrollTo(0, document.documentElement.scrollHeight));
-    await page.waitForTimeout(250);
+    await expectActive(page, "#contact");
     await scrollTo(page, 0);
     expect(await activeHref(page)).toBe("#about");
   });

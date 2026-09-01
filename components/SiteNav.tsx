@@ -40,6 +40,7 @@ export default function SiteNav() {
     let raf = 0;
     let lastY = -1;
     let settleFrames = 0;
+    let hashNet: ReturnType<typeof setTimeout> | undefined;
 
     const computeActive = () => {
       const doc = document.documentElement;
@@ -104,8 +105,10 @@ export default function SiteNav() {
       onScroll();
       // Safety net: if the rAF settle loop can't detect settle (no further
       // frames), release anyway — a recomputed-but-possibly-briefly-wrong
-      // highlight beats a frozen one.
-      setTimeout(() => {
+      // highlight beats a frozen one. Cleared on re-entry/unmount so a
+      // stale net can't release a newer pin early.
+      clearTimeout(hashNet);
+      hashNet = setTimeout(() => {
         if (suppressRef.current) {
           suppressRef.current = false;
           computeActive();
@@ -117,6 +120,7 @@ export default function SiteNav() {
       if (raf) cancelAnimationFrame(raf);
       clearTimeout(settle1);
       clearTimeout(settle2);
+      clearTimeout(hashNet);
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", onScroll);
       window.removeEventListener("hashchange", onHash);
