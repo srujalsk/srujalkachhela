@@ -1,7 +1,7 @@
 ---
 name: Srujal Kachhela
-safeTitle: Senior Software Engineer / Technical Lead
-tagline: Full Stack Developer and Technical Lead with 11+ years of experience building cloud and on-premises systems — from micro-frontends and serverless integrations to real-time platforms at scale.
+safeTitle: Full Stack Developer
+tagline: "Full Stack Developer with 11+ years building cloud and on-premises systems: micro-frontends, serverless integrations, real-time platforms."
 location: Bangkok, Thailand
 email: srujal.k@gmail.com
 linkedin: https://www.linkedin.com/in/srujalkachhela/
@@ -11,17 +11,17 @@ showPhone: false
 phone: ""
 metrics:
   - value: "25%"
-    label: "Up to 25% improvement in booking outcomes in impacted markets (WhatsApp login & account linking)"
+    label: "Up to 25% better booking outcomes in impacted markets"
   - value: "~250"
-    label: "Approximately 250 additional daily bookings attributed to LINE login integration"
+    label: "More daily bookings from messaging-platform login"
   - value: ">30%"
-    label: "More than 30% developer-effort savings from a lean shared micro-frontend framework"
+    label: "Developer effort saved by a shared micro-frontend framework"
   - value: "-80%"
-    label: "Up to 80% reduction in data-centre range wastage via range-based allocation service"
+    label: "Less data-centre range wastage via allocation service"
 ---
 
 ## About
 
-Full Stack Developer and Technical Lead based in Bangkok with 11+ years of experience across cloud and on-premises systems. I lead Agile engineering teams, design front-end platforms, and build the serverless and event-driven integrations that connect them.
+I've spent 11+ years building software, mostly cloud and on-premises systems, and I currently lead Agile engineering teams from Bangkok. My day-to-day tools are React, TypeScript, and Java, with Azure and AWS underneath and a soft spot for serverless, event-driven architecture.
 
-My work spans identity and account-linking systems at travel scale, micro-frontend frameworks shared across product teams, construction-technology lifecycle applications, and AWS infrastructure as code.
+Recent work covers identity and account-linking systems at travel scale, a micro-frontend framework shared across product teams, construction-technology applications, and infrastructure as code on AWS.

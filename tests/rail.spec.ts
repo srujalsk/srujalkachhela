@@ -5,7 +5,7 @@ import { expect, test } from "@playwright/test";
 //   2. page content is offset by the rail width so nothing sits underneath it
 //   3. scroll-spy moves aria-current as the user scrolls
 
-const RAIL_WIDTH = 256; // lg:w-64
+const RAIL_WIDTH = 240; // lg:w-60
 
 test.describe("desktop left-rail navigation", () => {
   test.beforeEach(async ({ page }) => {
@@ -37,16 +37,15 @@ test.describe("desktop left-rail navigation", () => {
       }
       return out;
     });
-    // #work is the projects grid; label must not duplicate "Experience"
-    expect(links.some((l) => l.includes("#work") && l.includes("Projects"))).toBe(true);
+    // #experience is the only in-page section between About and Contact
     expect(links.some((l) => l.includes("#experience") && l.includes("Experience"))).toBe(true);
-    expect(links.length).toBe(6);
+    expect(links.length).toBe(3);
   });
 
   test("page content clears the fixed rail at lg (no overlap)", async ({ page }) => {
     const overlap = await page.evaluate((railWidth) => {
       const bad: string[] = [];
-      const selectors = ["#about h1", "#work h2", "#experience h2", "#skills h2", "#education h2", "#contact h2"];
+      const selectors = ["#about h1", "#experience h2", "#contact h2"];
       for (const sel of selectors) {
         const el = document.querySelector(sel);
         if (!el) {

@@ -1,4 +1,3 @@
-import Reveal from "./Reveal";
 import type { Profile } from "@/lib/content-schema";
 
 /** Decorative data-flow signal line (pure SVG, hidden from AT). */
@@ -45,7 +44,7 @@ export default function Hero({ profile }: { profile: Profile }) {
           backgroundSize: "56px 56px",
         }}
       />
-      <div className="container-site relative pt-20 pb-16 sm:pt-28 sm:pb-24">
+      <div className="relative pt-20 pb-16 sm:pt-28 sm:pb-24">
         <ol className="space-y-1 font-mono text-sm text-accent-400">
           <li className="animate-rise">Hi, my name is</li>
         </ol>
@@ -68,16 +67,10 @@ export default function Hero({ profile }: { profile: Profile }) {
 
         <div className="mt-10 flex flex-wrap items-center gap-4 animate-rise [animation-delay:320ms]">
           <a
-            href="#work"
+            href="#experience"
             className="inline-flex min-h-12 items-center rounded-md bg-accent-500 px-6 font-mono text-sm font-semibold text-ink-950 hover:bg-accent-400 transition-colors"
           >
-            View work
-          </a>
-          <a
-            href="#experience"
-            className="inline-flex min-h-12 items-center rounded-md border border-accent-500 px-6 font-mono text-sm text-accent-400 hover:bg-accent-500/10 transition-colors"
-          >
-            Experience
+            View experience
           </a>
           {profile.cvPath ? (
             <a
@@ -99,22 +92,5 @@ export default function Hero({ profile }: { profile: Profile }) {
         <SignalLine />
       </div>
     </section>
-  );
-}
-
-export function ImpactMetrics({ metrics }: { metrics: Profile["metrics"] }) {
-  return (
-    <Reveal>
-      <section aria-label="Impact highlights" className="border-y border-ink-800 bg-ink-900">
-        <dl className="container-site grid grid-cols-1 xs:grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-10 py-14">
-          {metrics.map((m) => (
-            <div key={m.label} className="border-l-2 border-accent-500 pl-4">
-              <dt className="order-2 mt-2 block text-sm leading-snug text-paper-300">{m.label}</dt>
-              <dd className="order-1 font-mono text-4xl font-bold text-accent-400">{m.value}</dd>
-            </div>
-          ))}
-        </dl>
-      </section>
-    </Reveal>
   );
 }

@@ -1,6 +1,7 @@
 import type { Profile } from "@/lib/content-schema";
 import Footer from "@/components/Footer";
 import Link from "next/link";
+import { getSiteConfig } from "@/lib/site";
 
 export default function NotFound() {
   const profile = {
@@ -26,7 +27,7 @@ export default function NotFound() {
           Back to home
         </Link>
       </main>
-      <Footer profile={profile} />
+      {getSiteConfig().showFooter ? <Footer profile={profile} /> : null}
     </>
   );
 }

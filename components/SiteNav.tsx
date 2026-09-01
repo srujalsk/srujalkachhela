@@ -1,43 +1,134 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const SECTIONS = [
   { id: "about", label: "About" },
   { id: "experience", label: "Experience" },
-  { id: "work", label: "Projects" },
-  { id: "skills", label: "Skills" },
-  { id: "education", label: "Education" },
   { id: "contact", label: "Contact" },
 ] as const;
 
 /**
- * Fixed left rail (Brittany Chiang-style): logo, vertical numbered nav with
- * scroll-spy, social links at the bottom. Hidden below lg — the top bar +
+ * Fixed left rail (OpenViking-style "In this piece" index): eyebrow label,
+ * top-aligned numbered heading links with scroll-spy. Heading-level links
+ * only — no nested/sub-section entries. Hidden below lg — the top bar +
  * dialog handle mobile.
  */
 export default function SiteNav() {
   const [active, setActive] = useState<string>("about");
 
+  // Clicking a rail link highlights immediately and pins the choice until the
+  // smooth scroll arrives: without the pin, scroll events fired mid-flight
+  // would overwrite it with whatever section the passing viewport shows.
+  const suppressRef = useRef(false);
+  const handleNavClick = (id: string) => {
+    setActive(id);
+    // Pin the choice while the smooth scroll flies: mid-flight scroll events
+    // would otherwise overwrite it with whatever section passes through the
+    // band. The spy releases the pin when scrolling actually settles (see
+    // useEffect), so any jump distance is handled without a magic timeout.
+    suppressRef.current = true;
+  };
+
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        for (const entry of entries) {
-          if (entry.isIntersecting) setActive(entry.target.id);
+    // Scroll-spy: on every scroll frame, the active section is the one whose
+    // heading is at or above the 35% viewport line. A pure position check
+    // (not IntersectionObserver) because transition-only events miss state
+    // that doesn't change — e.g. scrolling up from a bottom-anchored Contact,
+    // where Experience already spans the whole band.
+    let raf = 0;
+    let lastY = -1;
+    let settleFrames = 0;
+    let hashNet: ReturnType<typeof setTimeout> | undefined;
+
+    const computeActive = () => {
+      const doc = document.documentElement;
+      const line = window.innerHeight * 0.35;
+
+      // Page scrolled to (or near) the bottom: always highlight the last
+      // section — it may sit entirely below the band line.
+      if (window.scrollY + window.innerHeight >= doc.scrollHeight - 4) {
+        setActive((prev) => (prev === SECTIONS[SECTIONS.length - 1]!.id ? prev : SECTIONS[SECTIONS.length - 1]!.id));
+        return;
+      }
+
+      let current: string = SECTIONS[0].id;
+      for (const { id } of SECTIONS) {
+        const el = document.getElementById(id);
+        if (el && el.getBoundingClientRect().top <= line) current = id;
+      }
+      setActive((prev) => (prev === current ? prev : current));
+    };
+
+    const check = () => {
+      raf = 0;
+      if (!suppressRef.current) {
+        computeActive();
+        return;
+      }
+      // Pinned: watch for the smooth scroll to settle — 3 consecutive frames
+      // (~50ms) at the same position — then release and compute normally.
+      // An independent rAF loop is required: the final scroll event of a
+      // smooth scroll is the last one, so settle can't be detected from
+      // scroll events alone.
+      const y = window.scrollY;
+      settleFrames = y === lastY ? settleFrames + 1 : 0;
+      lastY = y;
+      if (settleFrames >= 3) {
+        suppressRef.current = false;
+        settleFrames = 0;
+        computeActive();
+        return;
+      }
+      raf = requestAnimationFrame(check);
+    };
+
+    const onScroll = () => {
+      if (raf) return;
+      raf = requestAnimationFrame(check);
+    };
+
+    computeActive();
+    // Re-check after load settles: the browser's initial hash jump and late
+    // layout shifts (fonts, images) can land before/after this effect runs.
+    const settle1 = setTimeout(onScroll, 300);
+    const settle2 = setTimeout(onScroll, 1000);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll, { passive: true });
+    // Anchor navigation (deep links, back/forward) can jump without a scroll
+    // event firing after load — pin through the jump and recompute on settle.
+    const onHash = () => {
+      suppressRef.current = true;
+      lastY = -1;
+      settleFrames = 0;
+      onScroll();
+      // Safety net: if the rAF settle loop can't detect settle (no further
+      // frames), release anyway — a recomputed-but-possibly-briefly-wrong
+      // highlight beats a frozen one. Cleared on re-entry/unmount so a
+      // stale net can't release a newer pin early.
+      clearTimeout(hashNet);
+      hashNet = setTimeout(() => {
+        if (suppressRef.current) {
+          suppressRef.current = false;
+          computeActive();
         }
-      },
-      { rootMargin: "-30% 0px -55% 0px", threshold: 0 },
-    );
-    for (const { id } of SECTIONS) {
-      const el = document.getElementById(id);
-      if (el) observer.observe(el);
-    }
-    return () => observer.disconnect();
+      }, 2000);
+    };
+    window.addEventListener("hashchange", onHash);
+    return () => {
+      if (raf) cancelAnimationFrame(raf);
+      clearTimeout(settle1);
+      clearTimeout(settle2);
+      clearTimeout(hashNet);
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+      window.removeEventListener("hashchange", onHash);
+    };
   }, []);
 
   return (
-    <header className="hidden lg:fixed lg:inset-y-0 lg:left-0 lg:w-64 lg:flex lg:flex-col lg:px-10 lg:py-10 lg:z-40">
+    <header className="hidden lg:fixed lg:inset-y-0 lg:left-0 lg:w-60 lg:flex lg:flex-col lg:px-8 lg:py-10 lg:z-40">
       {/* Logo */}
       <Link
         href="/#about"
@@ -47,34 +138,49 @@ export default function SiteNav() {
         {"<sk />"}
       </Link>
 
-      {/* Vertical section nav, vertically centered */}
-      <nav aria-label="Section" className="flex-1 flex flex-col justify-center">
-        <ul className="space-y-5">
+      {/* Top-aligned section index, OpenViking-style */}
+      <nav aria-label="Main" className="mt-14">
+        <p
+          id="rail-label"
+          className="font-mono text-[11px] font-semibold tracking-[0.2em] uppercase text-paper-400 mb-5"
+        >
+          In this piece
+        </p>
+        <ul aria-labelledby="rail-label" className="space-y-3.5">
           {SECTIONS.map(({ id, label }, i) => {
             const isActive = active === id;
             return (
-              <li key={id}>
+              <li key={id} className="flex items-start gap-2.5">
+                <span
+                  aria-hidden="true"
+                  className={`mt-[7px] h-px flex-none transition-all duration-300 ${
+                    isActive
+                      ? "w-3.5 bg-accent-400"
+                      : "w-0 group-hover:w-2.5 bg-paper-300 opacity-0 group-hover:opacity-100"
+                  }`}
+                />
                 <a
                   href={`#${id}`}
+                  onClick={() => handleNavClick(id)}
                   aria-current={isActive ? "true" : undefined}
-                  className="group inline-flex items-center gap-3 font-mono text-xs"
+                  className="group inline-flex items-baseline gap-2 text-sm leading-5 transition-colors duration-300"
                 >
                   <span
-                    aria-hidden="true"
-                    className={`h-px transition-all duration-300 ${
+                    className={`font-mono text-xs tabular-nums transition-colors duration-300 ${
                       isActive
-                        ? "w-8 bg-accent-400"
-                        : "w-4 bg-paper-400 group-hover:w-7 group-hover:bg-paper-300"
-                    }`}
-                  />
-                  <span
-                    className={`transition-colors duration-300 ${
-                      isActive
-                        ? "text-accent-400"
+                        ? "text-paper-50"
                         : "text-paper-400 group-hover:text-paper-300"
                     }`}
                   >
-                    <span className="mr-1.5 text-paper-300">0{i + 1}.</span>
+                    0{i + 1}
+                  </span>
+                  <span
+                    className={`transition-colors duration-300 ${
+                      isActive
+                        ? "font-semibold text-paper-50"
+                        : "text-paper-400 group-hover:text-paper-300"
+                    }`}
+                  >
                     {label}
                   </span>
                 </a>
@@ -85,7 +191,7 @@ export default function SiteNav() {
       </nav>
 
       {/* Social links at the bottom of the rail */}
-      <ul className="flex flex-col gap-4" aria-label="Social profiles">
+      <ul className="mt-auto flex flex-col gap-4" aria-label="Social profiles">
         <li>
           <a
             href="https://github.com/srujalsk"

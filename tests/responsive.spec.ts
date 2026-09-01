@@ -80,7 +80,7 @@ test.describe("responsive layout", () => {
     await expect(dialog).toBeVisible();
     const links = dialog.getByRole("link");
     const n = await links.count();
-    expect(n).toBeGreaterThanOrEqual(5);
+    expect(n).toBeGreaterThanOrEqual(4);
     for (let i = 0; i < n; i++) {
       const b = await links.nth(i).boundingBox();
       expect(b?.height ?? 0).toBeGreaterThanOrEqual(44);
@@ -122,12 +122,36 @@ test.describe("responsive layout", () => {
   test("no hover-only interactions: all content reachable without hover", async ({ page }) => {
     await page.setViewportSize({ width: 375, height: 800 });
     await page.goto("/", { waitUntil: "networkidle" });
-    // Every project card must expose its summary text without hover
-    const cards = page.locator("#work article");
+    // Remaining sections must expose their content without hover
+    const cards = page.locator("#experience article, #contact a");
     const count = await cards.count();
     expect(count).toBeGreaterThanOrEqual(3);
     for (let i = 0; i < count; i++) {
       await expect(cards.nth(i)).toBeVisible();
     }
+  });
+
+  test("reveal animation: no content above the reading line is ever faded", async ({ page }) => {
+    await page.goto("/", { waitUntil: "networkidle" });
+    const max = await page.evaluate(() => document.documentElement.scrollHeight - window.innerHeight);
+    const bad: string[] = [];
+    for (let i = 0; i <= 10; i++) {
+      await page.evaluate((y) => window.scrollTo(0, y), Math.round((max * i) / 10));
+      await page.waitForTimeout(200);
+      const stuck = await page.evaluate(() => {
+        const out: string[] = [];
+        const line = window.innerHeight * 0.35;
+        for (const el of Array.from(document.querySelectorAll(".reveal"))) {
+          const cs = getComputedStyle(el);
+          const r = el.getBoundingClientRect();
+          if (r.top < line && r.bottom > 0 && Number(cs.opacity) < 0.99) {
+            out.push(`opacity=${cs.opacity} top=${Math.round(r.top)}`);
+          }
+        }
+        return out;
+      });
+      bad.push(...stuck);
+    }
+    expect(bad, bad.join(" | ")).toEqual([]);
   });
 });

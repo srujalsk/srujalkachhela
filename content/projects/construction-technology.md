@@ -4,7 +4,7 @@ slug: construction-technology
 type: case-study
 featured: true
 year: 2024
-summary: Led Agile teams building construction-technology lifecycle applications on a lean micro-frontend React framework with a serverless Azure integration layer.
+summary: "Construction-technology lifecycle apps built on a lean micro-frontend React framework with a serverless Azure integration layer."
 stack:
   - React
   - Micro-Frontends
@@ -18,8 +18,8 @@ links:
 confidential: true
 ---
 
-Led multiple Agile engineering teams building construction-technology lifecycle applications. Designed a lean micro-frontend React framework — a shared design system distributed as NPM packages that saved more than 30% of developer effort across teams.
+I led Agile teams building construction-technology lifecycle applications.
 
-The integration layer was serverless-first: Azure Functions, Event Grid event-driven workflows, Web PubSub real-time notifications, and APIs managed through Azure API Management, all deployed through end-to-end CI/CD pipelines.
+I designed a lean micro-frontend React framework: a shared design system shipped as NPM packages that saved more than 30% of developer effort across teams.
 
-Client-specific details are omitted; this case study describes architecture and approach only.
+The integration layer was serverless: Azure Functions, Event Grid workflows, Web PubSub notifications, and APIs behind Azure API Management, deployed through CI/CD. Client-specific details are left out; this is architecture and approach only.

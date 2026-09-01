@@ -6,4 +6,6 @@ export interface SiteConfig {
   description: string;
   author: string;
   locale: string;
+  /** Footer visibility — hidden for now, flip to re-enable. */
+  showFooter: boolean;
 }

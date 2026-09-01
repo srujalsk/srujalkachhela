@@ -12,24 +12,9 @@ stack:
   - .NET Core
   - Node.js
   - AngularJS
-  - Jenkins
-  - MSBuild
-  - Coded UI
-  - WiX Toolset
 highlights:
-  - AWS infrastructure as code using CloudFormation.
-  - AWS IoT Core integration.
-  - AWS Lambda APIs using .NET Core and Node.js.
-  - AWS CodeBuild and CodePipeline CI/CD.
-  - VPC networking and security.
-  - .NET Core Web API and AngularJS application development.
-  - Jenkins, MSBuild, Coded UI, and WiX Toolset build and test automation.
-  - AWS Storage Gateway, VMware ESXi, S3, SMB file shares, HAProxy, and Elasticsearch infrastructure work.
-  - Yammer chatbot proof of concept.
-
-projects:
-  - Bio-Rad Unity Next
-  - Agilent Technologies enterprise content management
+  - Built AWS infrastructure as code with CloudFormation, IoT Core device integration, and Lambda APIs in .NET Core and Node.js.
+  - Owned CodeBuild/CodePipeline automation plus VPC networking and security.
 ---
 
-Team Lead at Persistent Systems working across projects including Bio-Rad Unity Next and Agilent Technologies enterprise content management. Focused on AWS infrastructure as code with CloudFormation, IoT Core integration, Lambda APIs in .NET Core and Node.js, CodeBuild/CodePipeline automation, and VPC networking and security.
+I led delivery on enterprise web and cloud projects, doing both the application work and the infrastructure underneath it.

@@ -8,11 +8,12 @@ export function getSiteConfig(): SiteConfig {
     siteUrl,
     basePath,
     titleTemplate: "%s | Srujal Kachhela",
-    defaultTitle: "Srujal Kachhela — Full Stack Developer & Technical Lead",
+    defaultTitle: "Srujal Kachhela — Full Stack Developer",
     description:
-      "Full Stack Developer and Technical Lead in Bangkok with 11+ years of experience across cloud and on-premises systems: Azure, AWS, .NET, React, and distributed integrations.",
+      "Full Stack Developer in Bangkok with 11+ years of experience across cloud and on-premises systems: Azure, AWS, .NET, React, and distributed integrations.",
     author: "Srujal Kachhela",
     locale: "en",
+    showFooter: false,
   };
 }
 

@@ -16,7 +16,7 @@ test.describe("accessibility (axe)", () => {
   });
 
   test("404 page has no serious axe violations", async ({ page }) => {
-    await page.goto("/definitely-not-a-real-page/", { waitUntil: "load" });
+    await page.goto("/definitely-not-a-real-page/", { waitUntil: "networkidle" });
     const results = await new AxeBuilder({ page }).analyze();
     expect(results.violations.filter((v) => v.impact !== "minor").map((v) => v.id)).toEqual([]);
   });
@@ -111,7 +111,7 @@ test.describe("keyboard navigation", () => {
     await page.goto("/");
     // With reduced motion the reveal utility must leave content visible immediately
     const opacity = await page.evaluate(() => {
-      const section = document.querySelector("#work h2");
+      const section = document.querySelector("#experience h2");
       return section ? getComputedStyle(section.closest(".reveal") ?? section).opacity : null;
     });
     // The reveal element may still start hidden if JS hasn't run; check CSS rule instead
@@ -137,7 +137,8 @@ test.describe("keyboard navigation", () => {
     await expect(page.getByRole("banner")).toHaveCount(1);
     await expect(page.getByRole("navigation").first()).toBeAttached();
     await expect(page.getByRole("main")).toHaveCount(1);
-    await expect(page.getByRole("contentinfo")).toHaveCount(1);
+    // Footer is hidden by config (showFooter: false) — contentinfo is optional
+    await expect(page.getByRole("contentinfo")).toHaveCount(0);
   });
 
   test("headings follow a logical hierarchy", async ({ page }) => {

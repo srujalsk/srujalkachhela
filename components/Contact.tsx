@@ -4,10 +4,10 @@ import type { Profile } from "@/lib/content-schema";
 
 export default function Contact({ profile }: { profile: Profile }) {
   return (
-    <section id="contact" aria-labelledby="contact-heading" className="container-site py-20 sm:py-28">
+    <section id="contact" aria-labelledby="contact-heading" className="pt-4 pb-24 sm:pb-32">
       <Reveal>
         <h2 id="contact-heading" className="flex items-baseline gap-4 font-mono text-xl sm:text-2xl font-bold text-paper-50">
-          <span aria-hidden="true" className="text-accent-500 text-base">05.</span>
+          <span aria-hidden="true" className="text-accent-500 text-base">02.</span>
           Get in touch
         </h2>
         <p className="mt-6 max-w-xl text-base leading-relaxed text-paper-300">

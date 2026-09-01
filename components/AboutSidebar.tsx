@@ -80,10 +80,8 @@ export default function AboutSidebar({ profile }: { profile: Profile }) {
         <nav aria-label="Section shortcuts" className="mt-6 border-t border-ink-700 pt-5">
           <ul className="space-y-1">
             {[
-              ["#work", "Featured work"],
               ["#experience", "Experience"],
-              ["#skills", "Skills"],
-              ["#education", "Education"],
+              ["#contact", "Contact"],
             ].map(([href, label]) => (
               <li key={href}>
                 <a
